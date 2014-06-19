@@ -3,7 +3,6 @@
   "main": "./lib/toggle-packages",
   "version": "0.0.0",
   "description": "A short description of your package",
-  "activationEvents": ["toggle-packages:toggle"],
   "repository": "https://github.com/atom/toggle-packages",
   "license": "MIT",
   "engines": {

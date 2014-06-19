@@ -3,8 +3,12 @@
 module.exports =
 class TogglePackagesView extends View
   @content: ->
-    @div class: 'toggle-packages overlay from-top', =>
-      @div "The TogglePackages package is Alive! It's ALIVE!", class: "message"
+    # @div class: 'toggle-packages overlay from-top', =>
+    #   @div "The TogglePackages package is Alive! It's ALIVE!", class: "message"
+    # console.log "Got here"
+    # @span "The TogglePackages package is Alive! It's ALIVE!", class: "message"
+    @span 'Test'
+# TODO Get the array of 'togglePackages' here and present to user
 
   initialize: (serializeState) ->
     atom.workspaceView.command "toggle-packages:toggle", => @toggle()
@@ -21,4 +25,8 @@ class TogglePackagesView extends View
     if @hasParent()
       @detach()
     else
-      atom.workspaceView.append(this)
+      view = this
+      atom.packages.once 'activated', ->
+        console.log "Appending..."
+        # atom.workspaceView.append(view)
+        atom.workspaceView.statusBar?.appendLeft(view)
