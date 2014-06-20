@@ -5,17 +5,20 @@ module.exports =
   configDefaults:
     'togglePackages': 'vim-mode, emmet'
 
-
   activate: (state) ->
-    console.log "Toggle Packages Activating"
     # @togglePackagesView = new TogglePackagesView(state.togglePackagesViewState)
     @togglePackagesView = new TogglePackagesView()
     @togglePackagesView.toggle()
 
+    togglePackages = @getTogglePackages()
+    for togglePackage in togglePackages
+      @togglePackagesView.addTogglePackage(togglePackage)
+
   deactivate: ->
     @togglePackagesView.destroy()
-    # @togglePackagesView.destroy()
-    # Remove from statusBar here
 
   # serialize: ->
   #   togglePackagesViewState: @togglePackagesView.serialize()
+
+  getTogglePackages: ->
+    atom.config.get('toggle-packages.togglePackages') ? []
