@@ -14,13 +14,19 @@ class TogglePackagesView extends View
   destroy: ->
     @detach()
 
+  attach: ->
+    atom.workspaceView.statusBar?.appendLeft(this) unless @hasParent()
+
   toggle: ->
     if @hasParent()
       @detach()
     else
-      view = this
-      atom.packages.once 'activated', ->
-        atom.workspaceView.statusBar?.appendLeft(view)
+      if atom.workspaceView.statusBar?
+        @attach()
+      else
+        view = this
+        atom.packages.once 'activated', ->
+          view.attach()
 
   addTogglePackage: (togglePackage) ->
-    @togglePackages.append(togglePackage)
+    @togglePackages.append("<a href=\"#\" class=\"inline-block\">#{togglePackage}</a>")

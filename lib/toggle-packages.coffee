@@ -3,12 +3,17 @@ TogglePackagesView = require './toggle-packages-view'
 module.exports =
   togglePackagesView: null
   configDefaults:
-    'togglePackages': 'vim-mode, emmet'
+    togglePackages: [
+      'vim-mode',
+      'emmet'
+    ]
+
 
   activate: (state) ->
     # @togglePackagesView = new TogglePackagesView(state.togglePackagesViewState)
     @togglePackagesView = new TogglePackagesView()
     @togglePackagesView.toggle()
+    # @togglePackagesView.attach()
 
     togglePackages = @getTogglePackages()
     for togglePackage in togglePackages
