@@ -15,9 +15,10 @@ module.exports =
     @togglePackagesView.toggle()
     # @togglePackagesView.attach()
 
-    togglePackages = @getTogglePackages()
-    for togglePackage in togglePackages
-      @togglePackagesView.addTogglePackage(togglePackage)
+    togglePackageNames = @getTogglePackageNames()
+    for name in togglePackageNames
+      if @isValidPackage(name)
+        @togglePackagesView.addTogglePackage(name)
 
   deactivate: ->
     @togglePackagesView.destroy()
@@ -25,5 +26,8 @@ module.exports =
   # serialize: ->
   #   togglePackagesViewState: @togglePackagesView.serialize()
 
-  getTogglePackages: ->
+  getTogglePackageNames: ->
     atom.config.get('toggle-packages.togglePackages') ? []
+
+  isValidPackage: (name) ->
+    atom.packages.getAvailablePackageNames().indexOf(name) isnt -1
