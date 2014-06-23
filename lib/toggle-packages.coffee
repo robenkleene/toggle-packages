@@ -1,3 +1,4 @@
+_ = require 'underscore-plus'
 TogglePackagesView = require './toggle-packages-view'
 
 module.exports =
@@ -18,7 +19,8 @@ module.exports =
     togglePackageNames = @getTogglePackageNames()
     for name in togglePackageNames
       if @isValidPackage(name)
-        @togglePackagesView.addTogglePackage(name)
+        displayName = @getPackageDisplayName(name)
+        @togglePackagesView.addTogglePackage(displayName)
 
   deactivate: ->
     @togglePackagesView.destroy()
@@ -28,6 +30,9 @@ module.exports =
 
   getTogglePackageNames: ->
     atom.config.get('toggle-packages.togglePackages') ? []
+
+  getPackageDisplayName: (name) ->
+    _.undasherize(_.uncamelcase(name))
 
   isValidPackage: (name) ->
     atom.packages.getAvailablePackageNames().indexOf(name) isnt -1
