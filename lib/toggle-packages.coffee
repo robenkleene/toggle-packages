@@ -13,8 +13,7 @@ module.exports =
   activate: (state) ->
     # @togglePackagesView = new TogglePackagesView(state.togglePackagesViewState)
     @togglePackagesView = new TogglePackagesView()
-    @togglePackagesView.toggle()
-    # @togglePackagesView.attach()
+    @togglePackagesView.attach()
 
     togglePackageNames = @getTogglePackageNames()
     for name in togglePackageNames

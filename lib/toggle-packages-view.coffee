@@ -6,27 +6,21 @@ class TogglePackagesView extends View
     @div class: 'toggle-packages-wrapper inline-block', =>
       @div outlet: 'togglePackages'
 
-  initialize: (serializeState) ->
-    atom.workspaceView.command "toggle-packages:toggle", => @toggle()
+  # initialize: (serializeState) ->
+  #   atom.workspaceView.command "toggle-packages:toggle", => @toggle()
 
-  serialize: ->
+  # serialize: ->
 
   destroy: ->
     @detach()
 
   attach: ->
-    atom.workspaceView.statusBar?.appendLeft(this) unless @hasParent()
-
-  toggle: ->
-    if @hasParent()
-      @detach()
+    attach = => atom.workspaceView.statusBar?.appendLeft(this) unless @hasParent()
+    if atom.workspaceView.statusBar?
+      attach()
     else
-      if atom.workspaceView.statusBar?
-        @attach()
-      else
-        view = this
-        atom.packages.once 'activated', ->
-          view.attach()
+      atom.packages.once 'activated', ->
+        attach()
 
   addTogglePackage: (togglePackage) ->
     @togglePackages.append(" <a href=\"#\">#{togglePackage}</a>")
