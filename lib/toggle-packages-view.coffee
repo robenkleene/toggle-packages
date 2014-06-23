@@ -3,7 +3,7 @@
 module.exports =
 class TogglePackagesView extends View
   @content: ->
-    @div class: 'toggle-packages inline-block', =>
+    @div class: 'toggle-packages-wrapper inline-block', =>
       @div outlet: 'togglePackages'
 
   initialize: (serializeState) ->
@@ -29,4 +29,4 @@ class TogglePackagesView extends View
           view.attach()
 
   addTogglePackage: (togglePackage) ->
-    @togglePackages.append("<a href=\"#\" class=\"inline-block\">#{togglePackage}</a>")
+    @togglePackages.append(" <a href=\"#\">#{togglePackage}</a>")
