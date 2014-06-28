@@ -1,6 +1,7 @@
 togglePackagesManager = require '../lib/toggle-packages-manager'
 
 describe "TogglePackagesManager", ->
+
   beforeEach ->
     atom.config.set("toggle-packages.togglePackages", ['valid-package-one', 'invalid-package-two'])
     spyOn(atom.packages, 'getAvailablePackageNames').andReturn(['valid-package-one', 'valid-package-two']);
@@ -18,16 +19,7 @@ describe "TogglePackagesManager", ->
 
   describe "getTogglePackageNames()", ->
 
-    it "returns only valid packages", ->
+    it "returns only valid packages and logs a warning for invalid packages", ->
       expect(togglePackagesManager.getTogglePackageNames()).toEqual ['valid-package-one']
-
-
-    # It returns true for a valid package
-    # It returns false for an invalid package
-    # It emits a warning for an invalid package
-
-# describe getTogglePackageNames
-
-  # It returns valid packages
-  # It emits a warning for invalid packages
-  # It doesn't return invalid packages
+      expect(console.warn).toHaveBeenCalled()
+      expect(console.warn.callCount).toBe 1
