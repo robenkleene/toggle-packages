@@ -12,6 +12,6 @@ module.exports =
 createTogglePackagesView = ->
   {statusBar} = atom.workspaceView
   if statusBar?
-    TogglePackagesView = require './toggle-packages-status-view'
-    view = new TogglePackagesView(statusBar)
+    TogglePackagesStatusView = require './toggle-packages-status-view'
+    view = new TogglePackagesStatusView(statusBar)
     view.attach()
