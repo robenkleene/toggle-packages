@@ -1,5 +1,6 @@
 {View} = require 'atom'
 _ = require 'underscore-plus'
+togglePackagesManager = require './toggle-packages-manager'
 
 module.exports =
 class TogglePackagesView extends View
@@ -18,20 +19,13 @@ class TogglePackagesView extends View
     @statusBar.appendLeft(this)
 
   afterAttach: ->
-    togglePackageNames = @getTogglePackageNames()
+    togglePackageNames = togglePackagesManager.getTogglePackageNames()
     for name in togglePackageNames
-      if @isValidPackage(name)
-        displayName = @getPackageDisplayName(name)
-        @addTogglePackage(displayName)
+        @addTogglePackage(name)
 
-  addTogglePackage: (togglePackage) ->
-    @togglePackages.append(" <a href=\"#\">#{togglePackage}</a>")
-
-  getTogglePackageNames: ->
-    atom.config.get('toggle-packages.togglePackages') ? []
+  addTogglePackage: (name) ->
+    displayName = @getPackageDisplayName(name)
+    @togglePackages.append(" <a href=\"#\">#{displayName}</a>")
 
   getPackageDisplayName: (name) ->
     _.undasherize(_.uncamelcase(name))
-
-  isValidPackage: (name) ->
-    atom.packages.getAvailablePackageNames().indexOf(name) isnt -1
