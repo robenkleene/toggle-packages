@@ -3,4 +3,7 @@ exports.getTogglePackageNames = ->
   (togglePackage for togglePackage in togglePackages when @isValidPackage(togglePackage))
 
 exports.isValidPackage = (name) ->
-  atom.packages.getAvailablePackageNames().indexOf(name) isnt -1
+  valid = atom.packages.getAvailablePackageNames().indexOf(name) isnt -1
+  unless valid
+    console.warn "'#{name}' is not an available package name"
+  valid
