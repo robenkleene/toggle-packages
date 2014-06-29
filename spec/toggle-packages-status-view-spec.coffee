@@ -1,4 +1,4 @@
-{WorkspaceView, View} = require 'atom'
+{$, WorkspaceView, View} = require 'atom'
 TogglePackages = require '../lib/toggle-packages'
 TogglePackagesStatusView = require '../lib/toggle-packages-status-view'
 
@@ -70,16 +70,12 @@ describe "TogglePackagesStatusView", ->
   describe "The attached view", ->
 
     it "shows the valid packages", ->
-
-      # $('.iterable.object').each ->
-      # $(@)
-      #   .doThis()
-      #   .doThat()
-      # elements = view.togglePackages.find('a')
-
-      expect(view.togglePackages.find('a').length).toBe 2
-      # TODO unpack the array convert it into a format where it can be compared to the array
-      # console.log view.togglePackages.find('a')
+      elements = view.togglePackages.find('a')
+      expect(elements.length).toBe 2
+      packageNames = elements.map (i, el) =>
+          $(el).text()
+      .get();
+      expect(packageNames).toEqual ['Valid Package One', 'Valid Package Two']
 
   # TODO describe "addTogglePackage"
     # TODO Store the contents before adding the package, the contents after should be the contents before plus what should be added
