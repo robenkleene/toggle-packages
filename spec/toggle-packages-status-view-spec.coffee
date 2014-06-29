@@ -41,10 +41,12 @@ describe "activate()", ->
 # Figure out how to get the attached togglePackagesStatusView
 
 describe "TogglePackagesStatusView", ->
-  [togglePackagesStatusView] = []
+  [togglePackagesStatusView, view] = []
 
   beforeEach ->
     atom.workspaceView = new WorkspaceView
+    atom.config.set("toggle-packages.togglePackages", ['valid-package-one', 'valid-package-two', 'invalid-package-two'])
+    spyOn(atom.packages, 'getAvailablePackageNames').andReturn(['valid-package-one', 'valid-package-two', 'valid-package-three']);
 
     waitsForPromise ->
       atom.packages.activatePackage('toggle-packages')
@@ -54,6 +56,7 @@ describe "TogglePackagesStatusView", ->
       atom.workspaceView.statusBar.attach()
       togglePackagesStatusView = new TogglePackagesStatusView(atom.workspaceView.statusBar)
       togglePackagesStatusView.attach()
+      view = atom.workspaceView.statusBar.leftPanel.children().view()
 
   afterEach ->
     atom.workspaceView.statusBar.remove()
@@ -64,6 +67,19 @@ describe "TogglePackagesStatusView", ->
     it "removes underscores and capitalizes", ->
       expect(togglePackagesStatusView.getPackageDisplayName("package-name")).toBe "Package Name"
 
-  # describe "addTogglePackage"
+  describe "The attached view", ->
 
-  # Name is correct, e.g., doesn't have capitalization or underscores
+    it "shows the valid packages", ->
+
+      # $('.iterable.object').each ->
+      # $(@)
+      #   .doThis()
+      #   .doThat()
+      # elements = view.togglePackages.find('a')
+
+      expect(view.togglePackages.find('a').length).toBe 2
+      # TODO unpack the array convert it into a format where it can be compared to the array
+      # console.log view.togglePackages.find('a')
+
+  # TODO describe "addTogglePackage"
+    # TODO Store the contents before adding the package, the contents after should be the contents before plus what should be added
