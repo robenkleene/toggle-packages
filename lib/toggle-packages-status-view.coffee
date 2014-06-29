@@ -3,7 +3,7 @@ _ = require 'underscore-plus'
 togglePackagesManager = require './toggle-packages-manager'
 
 module.exports =
-class TogglePackagesView extends View
+class TogglePackagesStatusView extends View
   @content: ->
     @div class: 'toggle-packages-wrapper inline-block', =>
       @div outlet: 'togglePackages'
