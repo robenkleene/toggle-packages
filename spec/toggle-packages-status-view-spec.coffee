@@ -69,11 +69,13 @@ describe "TogglePackagesStatusView", ->
 
     it "shows the valid packages", ->
       elements = view.togglePackages.find('a')
-      expect(elements.length).toBe 2
+      expect(elements.length).toBe testDataHelper.available_toggle_packages.length
       packageNames = elements.map (i, el) =>
           $(el).text()
       .get();
       expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES
+
+  # describe "addToggle"
 
   # TODO describe "addTogglePackage"
     # TODO Store the contents before adding the package, the contents after should be the contents before plus what should be added
