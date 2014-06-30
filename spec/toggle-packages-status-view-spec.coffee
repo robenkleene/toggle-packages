@@ -1,6 +1,7 @@
 {$, WorkspaceView, View} = require 'atom'
 TogglePackages = require '../lib/toggle-packages'
 TogglePackagesStatusView = require '../lib/toggle-packages-status-view'
+testDataHelper = require './fixtures/test-data-helper'
 
 class StatusBarMock extends View
   @content: ->
@@ -38,15 +39,12 @@ describe "activate()", ->
     it "appends only one .toggle-packages-wrapper", ->
       expect(atom.workspaceView.vertical.find('.toggle-packages-wrapper').length).toBe 1
 
-# Figure out how to get the attached togglePackagesStatusView
-
 describe "TogglePackagesStatusView", ->
   [togglePackagesStatusView, view] = []
 
   beforeEach ->
     atom.workspaceView = new WorkspaceView
-    atom.config.set("toggle-packages.togglePackages", ['valid-package-one', 'valid-package-two', 'invalid-package-two'])
-    spyOn(atom.packages, 'getAvailablePackageNames').andReturn(['valid-package-one', 'valid-package-two', 'valid-package-three']);
+    testDataHelper.setup()
 
     waitsForPromise ->
       atom.packages.activatePackage('toggle-packages')
@@ -65,7 +63,7 @@ describe "TogglePackagesStatusView", ->
   describe "getPackageDisplayName(name)", ->
 
     it "removes underscores and capitalizes", ->
-      expect(togglePackagesStatusView.getPackageDisplayName("package-name")).toBe "Package Name"
+      expect(togglePackagesStatusView.getPackageDisplayName(testDataHelper.VALID_PACKAGE_ONE)).toBe testDataHelper.VALID_PACKAGE_ONE_DISPLAY_NAME
 
   describe "The attached view", ->
 
@@ -75,7 +73,7 @@ describe "TogglePackagesStatusView", ->
       packageNames = elements.map (i, el) =>
           $(el).text()
       .get();
-      expect(packageNames).toEqual ['Valid Package One', 'Valid Package Two']
+      expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES
 
   # TODO describe "addTogglePackage"
     # TODO Store the contents before adding the package, the contents after should be the contents before plus what should be added
