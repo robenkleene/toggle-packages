@@ -75,7 +75,14 @@ describe "TogglePackagesStatusView", ->
       .get();
       expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES
 
-  # describe "addToggle"
+  describe "addTogglePackage(name)", ->
 
-  # TODO describe "addTogglePackage"
-    # TODO Store the contents before adding the package, the contents after should be the contents before plus what should be added
+    it "adds the package display name", ->
+      togglePackagesStatusView.addTogglePackage("package-name")
+      elements = view.togglePackages.find('a')
+      expect(elements.length).toBe testDataHelper.available_toggle_packages.length + 1
+      packageNames = elements.map (i, el) =>
+          $(el).text()
+      .get();
+      console.log packageNames
+      expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES.concat ["Package Name"]
