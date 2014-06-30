@@ -4,8 +4,7 @@ testDataHelper = require './fixtures/test-data-helper'
 describe "TogglePackagesManager", ->
 
   beforeEach ->
-    atom.config.set("toggle-packages.togglePackages", testDataHelper.TOGGLE_PACKAGES)
-    spyOn(atom.packages, 'getAvailablePackageNames').andReturn(testDataHelper.AVAILABLE_PACKAGE_NAMES);
+    testDataHelper.setup()
     spyOn(console, 'warn')
 
   describe "isValidPackage()", ->
