@@ -70,10 +70,20 @@ describe "TogglePackagesStatusView", ->
     it "shows the valid packages", ->
       elements = view.togglePackages.find('a')
       expect(elements.length).toBe testDataHelper.available_toggle_packages.length
-      packageNames = elements.map (i, el) =>
-          $(el).text()
+      packageNames = elements.map (i, element) =>
+          $(element).text()
       .get();
       expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES
+
+    it "disable packages have the disable class applied", ->
+      elements = view.togglePackages.find('a')
+      packageNames = elements.map (i, element) =>
+          console.log element
+          element_class = $(element).attr('class')
+          if $(element).text() is testDataHelper.VALID_ENABLED_PACKAGE_DISPLAY_NAME
+            expect(element_class).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+          else if $(element).text() is testDataHelper.VALID_DISABLED_PACKAGE_DISPLAY_NAME
+            expect(element_class).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
 
   describe "addTogglePackage(name)", ->
 
