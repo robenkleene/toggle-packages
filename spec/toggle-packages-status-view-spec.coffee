@@ -84,5 +84,4 @@ describe "TogglePackagesStatusView", ->
       packageNames = elements.map (i, el) =>
           $(el).text()
       .get();
-      console.log packageNames
       expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES.concat ["Package Name"]

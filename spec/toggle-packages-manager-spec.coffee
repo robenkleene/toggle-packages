@@ -29,4 +29,5 @@ describe "TogglePackagesManager", ->
     it "returns true for enabled packages", ->
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_ENABLED_PACKAGE)).toBe true
 
-    # it "returns false for disabled packages", ->
+    it "returns false for disabled packages", ->
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_DISABLED_PACKAGE)).toBe false
