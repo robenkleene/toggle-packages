@@ -1,5 +1,8 @@
-exports.VALID_ENABLED_PACKAGE = "valid-active-package-one"
-exports.VALID_ENABLED_PACKAGE_DISPLAY_NAME = "Valid Active Package One"
+exports.VALID_ENABLED_PACKAGE = "valid-active-package"
+exports.VALID_ENABLED_PACKAGE_DISPLAY_NAME = "Valid Active Package"
+
+# exports.VALID_DISABLED_PACKAGE = "valid-active-package"
+# exports.VALID_ENABLED_PACKAGE_DISPLAY_NAME = "Valid Active Package"
 
 exports.INVALID_PACKAGE = "invalid-package"
 
