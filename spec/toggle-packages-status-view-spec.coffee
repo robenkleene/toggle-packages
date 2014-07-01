@@ -91,7 +91,13 @@ describe "TogglePackagesStatusView", ->
       togglePackagesStatusView.addTogglePackage("package-name")
       elements = view.togglePackages.find('a')
       expect(elements.length).toBe testDataHelper.available_toggle_packages.length + 1
-      packageNames = elements.map (i, el) =>
-          $(el).text()
+      packageNames = elements.map (i, element) =>
+          # If it's the added package then test for the disabled class
+          element_class = $(element).attr('class')
+          if $(element).text() is "Package Name"
+            expect(element_class).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+          # Return the text
+          $(element).text()
       .get();
       expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES.concat ["Package Name"]
+      # Expect the added package to be disabled?
