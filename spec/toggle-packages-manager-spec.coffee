@@ -14,7 +14,7 @@ describe "TogglePackagesManager", ->
       expect(console.warn).not.toHaveBeenCalled()
 
     it "returns false and logs a warning for invalid packages", ->
-      expect(togglePackagesManager.isValidPackage(testDataHelper.INVALID_PACKAGE_ONE)).toBe false
+      expect(togglePackagesManager.isValidPackage(testDataHelper.INVALID_PACKAGE)).toBe false
       expect(console.warn).toHaveBeenCalled()
 
   describe "getTogglePackageNames()", ->

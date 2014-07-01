@@ -1,9 +1,9 @@
 exports.VALID_ENABLED_PACKAGE = "valid-active-package-one"
 exports.VALID_ENABLED_PACKAGE_DISPLAY_NAME = "Valid Active Package One"
 
-exports.INVALID_PACKAGE_ONE = "invalid-package-one"
+exports.INVALID_PACKAGE = "invalid-package-one"
 
-exports.TOGGLE_PACKAGES = [@VALID_ENABLED_PACKAGE, 'valid-package-two', @INVALID_PACKAGE_ONE]
+exports.TOGGLE_PACKAGES = [@VALID_ENABLED_PACKAGE, 'valid-package-two', @INVALID_PACKAGE]
 
 exports.AVAILABLE_PACKAGE_NAMES = [@VALID_ENABLED_PACKAGE, 'valid-package-two', 'valid-package-three']
 
