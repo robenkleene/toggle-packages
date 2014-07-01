@@ -1,7 +1,7 @@
 exports.VALID_ENABLED_PACKAGE = "valid-active-package-one"
 exports.VALID_ENABLED_PACKAGE_DISPLAY_NAME = "Valid Active Package One"
 
-exports.INVALID_PACKAGE = "invalid-package-one"
+exports.INVALID_PACKAGE = "invalid-package"
 
 exports.TOGGLE_PACKAGES = [@VALID_ENABLED_PACKAGE, 'valid-package-two', @INVALID_PACKAGE]
 
