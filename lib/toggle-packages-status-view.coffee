@@ -25,7 +25,11 @@ class TogglePackagesStatusView extends View
 
   addTogglePackage: (name) ->
     displayName = @getPackageDisplayName(name)
-    @togglePackages.append(" <a href=\"#\">#{displayName}</a>")
+    packageHTML = " <a href=\"#\">#{displayName}</a>"
+    if not togglePackagesManager.isPackageEnabled(name)
+      packageHTML = " <a href=\"#\" class=\"text-subtle\">#{displayName}</a>"
+    else
+    @togglePackages.append(packageHTML)
 
   getPackageDisplayName: (name) ->
     _.undasherize(_.uncamelcase(name))

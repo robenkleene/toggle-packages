@@ -7,3 +7,6 @@ exports.isValidPackage = (name) ->
   unless valid
     console.warn "'#{name}' is not an available package name"
   valid
+
+exports.isPackageEnabled = (name) ->
+  not atom.packages.isPackageDisabled(name)
