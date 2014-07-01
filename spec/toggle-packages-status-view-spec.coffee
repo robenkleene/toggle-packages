@@ -63,7 +63,7 @@ describe "TogglePackagesStatusView", ->
   describe "getPackageDisplayName(name)", ->
 
     it "removes underscores and capitalizes", ->
-      expect(togglePackagesStatusView.getPackageDisplayName(testDataHelper.VALID_PACKAGE_ONE)).toBe testDataHelper.VALID_PACKAGE_ONE_DISPLAY_NAME
+      expect(togglePackagesStatusView.getPackageDisplayName(testDataHelper.VALID_ENABLED_PACKAGE)).toBe testDataHelper.VALID_ENABLED_PACKAGE_DISPLAY_NAME
 
   describe "The attached view", ->
 
