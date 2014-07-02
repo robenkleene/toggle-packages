@@ -23,5 +23,5 @@ exports.setupMockPackages = ->
 
 path = require 'path'
 exports.setupExamplePackages = ->
-  waitsForPromise ->
-    atom.packages.activatePackage(path.join(__dirname, 'example-package'))
+  waitsForPromise =>
+    atom.packages.activatePackage(path.join(__dirname, @VALID_ENABLED_PACKAGE))
