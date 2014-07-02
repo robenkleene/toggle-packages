@@ -44,7 +44,7 @@ describe "TogglePackagesStatusView", ->
 
   beforeEach ->
     atom.workspaceView = new WorkspaceView
-    testDataHelper.setup()
+    testDataHelper.setupMockPackages()
 
     waitsForPromise ->
       atom.packages.activatePackage('toggle-packages')
@@ -78,7 +78,6 @@ describe "TogglePackagesStatusView", ->
     it "disable packages have the disable class applied", ->
       elements = view.togglePackages.find('a')
       packageNames = elements.map (i, element) =>
-          console.log element
           element_class = $(element).attr('class')
           if $(element).text() is testDataHelper.VALID_ENABLED_PACKAGE_DISPLAY_NAME
             expect(element_class).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS

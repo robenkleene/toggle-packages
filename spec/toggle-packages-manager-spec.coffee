@@ -1,10 +1,11 @@
+path = require 'path'
 togglePackagesManager = require '../lib/toggle-packages-manager'
 testDataHelper = require './fixtures/test-data-helper'
 
-describe "TogglePackagesManager", ->
+describe "TogglePackagesManager with setupMockPackages()", ->
 
   beforeEach ->
-    testDataHelper.setup()
+    testDataHelper.setupMockPackages()
     spyOn(console, 'warn')
 
   describe "isValidPackage()", ->
@@ -31,3 +32,15 @@ describe "TogglePackagesManager", ->
 
     it "returns false for disabled packages", ->
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_DISABLED_PACKAGE)).toBe false
+
+describe "TogglePackagesManager with setupExamplePackages()", ->
+
+  beforeEach ->
+    testDataHelper.setupExamplePackages()
+    spyOn(console, 'warn')
+
+  describe "setupExamplePackages()", ->
+
+    it "it sets up example packages", ->
+
+      console.log atom.packages.getActivePackages()

@@ -15,8 +15,13 @@ exports.AVAILABLE_PACKAGE_DISPLAY_NAMES = [@VALID_ENABLED_PACKAGE_DISPLAY_NAME, 
 exports.available_toggle_packages = @TOGGLE_PACKAGES.filter (n) =>
   @AVAILABLE_PACKAGE_NAMES.indexOf(n) != -1
 
-exports.setup = ->
+exports.setupMockPackages = ->
   atom.config.set("toggle-packages.togglePackages", @TOGGLE_PACKAGES)
   spyOn(atom.packages, 'getAvailablePackageNames').andReturn(@AVAILABLE_PACKAGE_NAMES)
   spyOn(atom.packages, 'isPackageDisabled').andCallFake (args) =>
     not (args is @VALID_ENABLED_PACKAGE)
+
+path = require 'path'
+exports.setupExamplePackages = ->
+  waitsForPromise ->
+    atom.packages.activatePackage(path.join(__dirname, 'example-package'))
