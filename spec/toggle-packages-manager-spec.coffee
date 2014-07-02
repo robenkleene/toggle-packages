@@ -11,7 +11,7 @@ describe "TogglePackagesManager with setupMockPackages()", ->
   describe "isValidPackage()", ->
 
     it "returns true and doesn't log a warning for valid packages ", ->
-      expect(togglePackagesManager.isValidPackage(testDataHelper.VALID_ENABLED_PACKAGE)).toBe true
+      expect(togglePackagesManager.isValidPackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
       expect(console.warn).not.toHaveBeenCalled()
 
     it "returns false and logs a warning for invalid packages", ->
@@ -28,21 +28,21 @@ describe "TogglePackagesManager with setupMockPackages()", ->
   describe "isPackageEnabled(name)", ->
 
     it "returns true for enabled packages", ->
-      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_ENABLED_PACKAGE)).toBe true
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
 
     it "returns false for disabled packages", ->
-      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_DISABLED_PACKAGE)).toBe false
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
 
 describe "TogglePackagesManager with setupExamplePackages()", ->
 
   beforeEach ->
     testDataHelper.setupExamplePackages()
-    spyOn(console, 'warn')
+    # spyOn(console, 'warn')
 
   describe "isPackageEnabled(name)", ->
 
     it "returns true for enabled packages", ->
-      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_ENABLED_PACKAGE)).toBe true
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
 
     it "returns false for disabled packages", ->
-      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_DISABLED_PACKAGE)).toBe false
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false

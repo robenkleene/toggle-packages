@@ -63,7 +63,7 @@ describe "TogglePackagesStatusView", ->
   describe "getPackageDisplayName(name)", ->
 
     it "removes underscores and capitalizes", ->
-      expect(togglePackagesStatusView.getPackageDisplayName(testDataHelper.VALID_ENABLED_PACKAGE)).toBe testDataHelper.VALID_ENABLED_PACKAGE_DISPLAY_NAME
+      expect(togglePackagesStatusView.getPackageDisplayName(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe testDataHelper.VALID_PACKAGE_STARTS_ENABLED_DISPLAY_NAME
 
   describe "The attached view", ->
 
@@ -79,9 +79,9 @@ describe "TogglePackagesStatusView", ->
       elements = view.togglePackages.find('a')
       packageNames = elements.map (i, element) =>
           element_class = $(element).attr('class')
-          if $(element).text() is testDataHelper.VALID_ENABLED_PACKAGE_DISPLAY_NAME
+          if $(element).text() is testDataHelper.VALID_PACKAGE_STARTS_ENABLED_DISPLAY_NAME
             expect(element_class).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
-          else if $(element).text() is testDataHelper.VALID_DISABLED_PACKAGE_DISPLAY_NAME
+          else if $(element).text() is testDataHelper.VALID_PACKAGE_STARTS_DISABLED_DISPLAY_NAME
             expect(element_class).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
 
   describe "addTogglePackage(name)", ->
