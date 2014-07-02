@@ -39,10 +39,10 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
     testDataHelper.setupExamplePackages()
     spyOn(console, 'warn')
 
-  describe "setupExamplePackages()", ->
+  describe "isPackageEnabled(name)", ->
 
-    it "enables the valid enabled package", ->
+    it "returns true for enabled packages", ->
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_ENABLED_PACKAGE)).toBe true
 
-    it "disables the valid disabled package", ->
+    it "returns false for disabled packages", ->
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_DISABLED_PACKAGE)).toBe false

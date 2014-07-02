@@ -1,12 +1,12 @@
 path = require 'path'
 
-exports.VALID_ENABLED_PACKAGE = "valid-enabled-package"
-exports.VALID_ENABLED_PACKAGE_DISPLAY_NAME = "Valid Enabled Package"
-@VALID_ENABLED_PACKAGE_PATH = path.join(__dirname, @VALID_ENABLED_PACKAGE)
+@FIXTURE_PACKAGE_DIRECTORY = path.join(__dirname, "packages")
 
-exports.VALID_DISABLED_PACKAGE = "valid-disabled-package"
-exports.VALID_DISABLED_PACKAGE_DISPLAY_NAME = "Valid Disabled Package"
-@VALID_DISABLED_PACKAGE_PATH = path.join(__dirname, @VALID_DISABLED_PACKAGE)
+exports.VALID_ENABLED_PACKAGE = "package-without-module"
+exports.VALID_ENABLED_PACKAGE_DISPLAY_NAME = "Package Without Module"
+
+exports.VALID_DISABLED_PACKAGE = "package-with-stylesheets"
+exports.VALID_DISABLED_PACKAGE_DISPLAY_NAME = "Package With Stylesheets"
 
 exports.INVALID_PACKAGE = "invalid-package"
 
@@ -28,16 +28,14 @@ exports.setupMockPackages = ->
   spyOn(atom.packages, 'isPackageDisabled').andCallFake (args) =>
     not (args is @VALID_ENABLED_PACKAGE)
 
-
 exports.setupExamplePackages = ->
   @setupTogglePackages()
 
   waitsForPromise =>
-    atom.packages.activatePackage(@VALID_ENABLED_PACKAGE_PATH)
+    atom.packages.activatePackage(@VALID_ENABLED_PACKAGE)
 
   waitsForPromise =>
-    atom.packages.activatePackage(@VALID_DISABLED_PACKAGE_PATH)
+    atom.packages.activatePackage(@VALID_DISABLED_PACKAGE)
 
   runs =>
-    console.log atom.packages.getActivePackages()
-    atom.packages.disablePackage(@VALID_DISABLED_PACKAGE_PATH)
+    atom.packages.disablePackage(@VALID_DISABLED_PACKAGE)
