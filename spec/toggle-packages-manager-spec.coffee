@@ -41,6 +41,8 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
 
   describe "setupExamplePackages()", ->
 
-    it "it sets up example packages", ->
+    it "enables the valid enabled package", ->
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_ENABLED_PACKAGE)).toBe true
 
-      console.log atom.packages.getActivePackages()
+    it "disables the valid disabled package", ->
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_DISABLED_PACKAGE)).toBe false
