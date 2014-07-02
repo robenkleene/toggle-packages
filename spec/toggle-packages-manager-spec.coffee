@@ -46,3 +46,17 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
 
     it "returns false for disabled packages", ->
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
+
+  describe "togglePackage(name)", ->
+
+    it "toggles a disabled package", ->
+      togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
+      togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
+
+    it "toggles an enabled package", ->
+      togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
+      togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false

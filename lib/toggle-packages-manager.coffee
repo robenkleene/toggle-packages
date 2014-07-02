@@ -10,3 +10,9 @@ exports.isValidPackage = (name) ->
 
 exports.isPackageEnabled = (name) ->
   not atom.packages.isPackageDisabled(name)
+
+exports.togglePackage = (name) ->
+  if @isPackageEnabled(name)
+    atom.packages.disablePackage(name)
+  else
+    atom.packages.enablePackage(name)
