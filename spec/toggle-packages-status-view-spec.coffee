@@ -39,7 +39,7 @@ describe "activate()", ->
     it "appends only one .toggle-packages-wrapper", ->
       expect(atom.workspaceView.vertical.find('.toggle-packages-wrapper').length).toBe 1
 
-describe "TogglePackagesStatusView", ->
+describe "TogglePackagesStatusView with setupMockPackages()", ->
   [togglePackagesStatusView, view] = []
 
   beforeEach ->
@@ -65,7 +65,7 @@ describe "TogglePackagesStatusView", ->
     it "removes underscores and capitalizes", ->
       expect(togglePackagesStatusView.getPackageDisplayName(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe testDataHelper.VALID_PACKAGE_STARTS_ENABLED_DISPLAY_NAME
 
-  describe "The attached view", ->
+  describe "the attached view", ->
 
     it "shows the valid packages", ->
       elements = view.togglePackages.find('a')
@@ -146,4 +146,42 @@ describe "TogglePackagesStatusView", ->
           $(element).text()
       .get();
       expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES.concat ["Package Name"]
-      # Expect the added package to be disabled?
+
+describe "TogglePackagesStatusView with setupExamplePackages()", ->
+  [togglePackagesStatusView, view] = []
+
+  beforeEach ->
+    atom.workspaceView = new WorkspaceView
+    testDataHelper.setupExamplePackages()
+
+    waitsForPromise ->
+      atom.packages.activatePackage('toggle-packages')
+
+    runs ->
+      atom.workspaceView.statusBar = new StatusBarMock()
+      atom.workspaceView.statusBar.attach()
+      togglePackagesStatusView = new TogglePackagesStatusView(atom.workspaceView.statusBar)
+      togglePackagesStatusView.attach()
+      view = atom.workspaceView.statusBar.leftPanel.children().view()
+
+  afterEach ->
+    atom.workspaceView.statusBar.remove()
+    atom.workspaceView.statusBar = null
+
+  describe "the attached view", ->
+
+    it "toggles a package that starts enabled when its element is clicked", ->
+      element = togglePackagesStatusView.getPackageStatusElement(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
+      element.click()
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
+      element.click()
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
+
+    it "toggles a package that starts disabled when its element is clicked", ->
+      element = togglePackagesStatusView.getPackageStatusElement(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
+      element.click()
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
+      element.click()
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
