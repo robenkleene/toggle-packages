@@ -86,10 +86,17 @@ describe "TogglePackagesStatusView", ->
       expect($(element).text()).toBe testDataHelper.VALID_PACKAGE_STARTS_DISABLED_DISPLAY_NAME
       expect($(element).attr('id')).toBe testDataHelper.VALID_PACKAGE_STARTS_DISABLED
 
-    # it "removes the disabled class from enabled packages", ->
-    #   packageStatusElement = togglePackagesStatusView.getPackageStatusElement(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
-    #   expect($(packageStatusElement).attr('class')).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
-    #   console.log "packageStatusElement = #{packageStatusElement.html()}"
+    it "removes the disabled class from enabled packages", ->
+      spyOn(atom.packages, 'enablePackage').andCallFake (name) =>
+        testDataHelper.togglePackage(name)
+      element = togglePackagesStatusView.getPackageStatusElement(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
+      expect($(element).attr('class')).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+      atom.packages.enablePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
+
+      # atom.packages.trigger('enabledPackage', [testDataHelper.VALID_PACKAGE_STARTS_DISABLED]);
+      # expect($(element).attr('class')).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+      # TODO emit `atom.packages` `enablePackage` event
 
 
   describe "addTogglePackage(name)", ->
@@ -99,10 +106,10 @@ describe "TogglePackagesStatusView", ->
       elements = view.togglePackages.find('a')
       expect(elements.length).toBe testDataHelper.available_toggle_packages.length + 1
       packageNames = elements.map (i, element) =>
-          # If it's the added package then test for the disabled class
+          # Test the disabled class for the added package
           element_class = $(element).attr('class')
           if $(element).text() is "Package Name"
-            expect(element_class).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+            expect(element_class).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
           # Return the text
           $(element).text()
       .get();

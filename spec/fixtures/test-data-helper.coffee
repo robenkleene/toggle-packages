@@ -19,14 +19,24 @@ exports.AVAILABLE_PACKAGE_DISPLAY_NAMES = [@VALID_PACKAGE_STARTS_ENABLED_DISPLAY
 exports.available_toggle_packages = @TOGGLE_PACKAGES.filter (n) =>
   @AVAILABLE_PACKAGE_NAMES.indexOf(n) != -1
 
+@disabled_packages = [@VALID_PACKAGE_STARTS_DISABLED]
+
 @setupTogglePackages = ->
   atom.config.set("toggle-packages.togglePackages", @TOGGLE_PACKAGES)
+
+exports.togglePackage = (name) ->
+  index = @disabled_packages.indexOf(name)
+  if not (index is -1)
+    @disabled_packages.splice(index, 1)
+  else
+    @disabled_packages.push(name)
 
 exports.setupMockPackages = ->
   @setupTogglePackages()
   spyOn(atom.packages, 'getAvailablePackageNames').andReturn(@AVAILABLE_PACKAGE_NAMES)
-  spyOn(atom.packages, 'isPackageDisabled').andCallFake (args) =>
-    not (args is @VALID_PACKAGE_STARTS_ENABLED)
+  spyOn(atom.packages, 'isPackageDisabled').andCallFake (name) =>
+    @disabled_packages.indexOf(name) isnt -1
+    # not (args is @VALID_PACKAGE_STARTS_ENABLED)
 
 exports.setupExamplePackages = ->
   @setupTogglePackages()

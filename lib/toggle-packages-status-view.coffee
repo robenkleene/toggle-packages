@@ -15,7 +15,7 @@ class TogglePackagesStatusView extends View
     #   console.log args
     # atom.packages.on 'enablePackage', (args) =>
     #   console.log "enabledPackage with " + args
-
+      # Just set the element to have the right class
 
   destroy: ->
     @detach()
@@ -39,4 +39,5 @@ class TogglePackagesStatusView extends View
   getPackageDisplayName: (name) ->
     _.undasherize(_.uncamelcase(name))
 
-  # TODO getPackageStatusElement: (name) ->
+  getPackageStatusElement: (name) ->
+    @togglePackages.find("##{name}")
