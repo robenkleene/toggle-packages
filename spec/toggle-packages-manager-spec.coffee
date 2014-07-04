@@ -72,10 +72,14 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
       togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
 
-    it "makes 'atom.packages' emit an 'enablePackage' event when a package becomes enabled", ->
-
-      spyOn(atom.packages, 'enablePackage')
+    it "makes 'atom.config' update 'core.disabledPackages' when a package becomes enabled", ->
+      expect((atom.config.get 'core.disabledPackages').indexOf(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).not.toBe -1
+      atom.config.observe 'core.disabledPackages', callNow: false, (value) ->
+        expect(value.indexOf(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe -1
       togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
-      expect(atom.packages.enablePackage).toHaveBeenCalledWith(testDataHelper.VALID_PACKAGE_STARTS_DISABLED);
 
-    # TODO it "makes 'atom.packages' emit an event when a package becomes enabled", ->
+    it "makes 'atom.config' update 'core.disabledPackages' when a package becomes disabled", ->
+      expect((atom.config.get 'core.disabledPackages').indexOf(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe -1
+      atom.config.observe 'core.disabledPackages', callNow: false, (value) ->
+        expect(value.indexOf(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).not.toBe -1
+      togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
