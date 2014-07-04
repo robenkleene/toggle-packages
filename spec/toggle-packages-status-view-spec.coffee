@@ -87,17 +87,26 @@ describe "TogglePackagesStatusView", ->
       expect($(element).attr('id')).toBe testDataHelper.VALID_PACKAGE_STARTS_DISABLED
 
     it "removes the disabled class from enabled packages", ->
-      spyOn(atom.packages, 'enablePackage').andCallFake (name) =>
-        testDataHelper.togglePackage(name)
       element = togglePackagesStatusView.getPackageStatusElement(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
       expect($(element).attr('class')).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
-      atom.packages.enablePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
+      testDataHelper.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
       expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
 
-      # atom.packages.trigger('enabledPackage', [testDataHelper.VALID_PACKAGE_STARTS_DISABLED]);
-      # expect($(element).attr('class')).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
-      # TODO emit `atom.packages` `enablePackage` event
+      # TODO make the togglePackagesStatusView observe `core.disabledPackages`
 
+      # expect($(element).attr('class')).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+
+    # TODO it "adds the disabled class to disabled packages", ->
+
+    it "removes packages removed from the setting", ->
+      packageToRemove = testDataHelper.VALID_PACKAGE_STARTS_ENABLED
+      element = togglePackagesStatusView.getPackageStatusElement(packageToRemove)
+      expect(element.length).toBe 1
+      togglePackages = atom.config.get('toggle-packages.togglePackages')
+      togglePackages.splice(togglePackages.indexOf(packageToRemove), 1)
+      atom.config.set('toggle-packages.togglePackages', togglePackages)
+      element = togglePackagesStatusView.getPackageStatusElement(packageToRemove)
+      expect(element.length).toBe 0
 
   describe "addTogglePackage(name)", ->
 
