@@ -71,3 +71,11 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
       togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
+
+    it "makes 'atom.packages' emit an 'enablePackage' event when a package becomes enabled", ->
+
+      spyOn(atom.packages, 'enablePackage')
+      togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
+      expect(atom.packages.enablePackage).toHaveBeenCalledWith(testDataHelper.VALID_PACKAGE_STARTS_DISABLED);
+
+    # TODO it "makes 'atom.packages' emit an event when a package becomes enabled", ->
