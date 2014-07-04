@@ -1,4 +1,4 @@
-{View} = require 'atom'
+{$, View} = require 'atom'
 _ = require 'underscore-plus'
 togglePackagesManager = require './toggle-packages-manager'
 
@@ -9,25 +9,10 @@ class TogglePackagesStatusView extends View
       @div outlet: 'togglePackages'
 
   initialize: (@statusBar) ->
-    # atom.packages.on 'activatePackage', (args) =>
-    #   console.log args
-    # atom.packages.on 'enablePackage', (args) =>
-    #   console.log "enabledPackage with " + args
-      # Just set the element to have the right class
-
-  # Toggle packages events, confirm there is a list item for each package
-  # Disabled package events, confirm that for the new or missing toggle packages, that they have the right status
-
-
-  # Observe `toggle-packages.togglePackages` and `core.disabledPackages`
-  # Do this after attach
-  # Only callNow for one of them (the second)
-  # The called method:
 
   updateTogglePackages: ->
     togglePackages = togglePackagesManager.getTogglePackageNames()
     disabledPackages = atom.config.get 'core.disabledPackages'
-
 
   destroy: ->
     @detach()
@@ -69,11 +54,15 @@ class TogglePackagesStatusView extends View
     element.remove()
 
   addTogglePackage: (name) ->
-    displayName = @getPackageDisplayName(name)
-    packageHTML = " <a href=\"#\" id=\"#{name}\">#{displayName}</a>"
+    packageElement = $("<a>")
+    packageElement.attr("id", name)
+    packageElement.append(@getPackageDisplayName(name))
+    packageElement.click =>
+      togglePackagesManager.togglePackage(name)
     if not togglePackagesManager.isPackageEnabled(name)
-      packageHTML = " <a href=\"#\" id=\"#{name}\" class=\"#{@DISABLED_PACKAGE_CLASS}\">#{displayName}</a>"
-    @togglePackages.append(packageHTML)
+      packageElement.addClass(@DISABLED_PACKAGE_CLASS)
+    @togglePackages.append(" ")
+    @togglePackages.append(packageElement)
 
   getPackageDisplayName: (name) ->
     _.undasherize(_.uncamelcase(name))

@@ -110,7 +110,7 @@ describe "TogglePackagesStatusView", ->
       expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
       expect($(element).attr('class')).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
 
-    it "removes packages removed from the setting", ->
+    it "removes packages removed from config", ->
       packageToRemove = testDataHelper.VALID_PACKAGE_STARTS_ENABLED
       element = togglePackagesStatusView.getPackageStatusElement(packageToRemove)
       expect(element.length).toBe 1
@@ -120,7 +120,7 @@ describe "TogglePackagesStatusView", ->
       element = togglePackagesStatusView.getPackageStatusElement(packageToRemove)
       expect(element.length).toBe 0
 
-    it "adds packages added to the setting", ->
+    it "adds packages added to config", ->
       packageToAdd = "package-name"
       element = togglePackagesStatusView.getPackageStatusElement(packageToAdd)
       expect(element.length).toBe 0
