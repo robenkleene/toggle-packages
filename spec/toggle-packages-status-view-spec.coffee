@@ -86,17 +86,29 @@ describe "TogglePackagesStatusView", ->
       expect($(element).text()).toBe testDataHelper.VALID_PACKAGE_STARTS_DISABLED_DISPLAY_NAME
       expect($(element).attr('id')).toBe testDataHelper.VALID_PACKAGE_STARTS_DISABLED
 
-    it "removes the disabled class from enabled packages", ->
+    it "toggles the disabled class starting from disabled", ->
       element = togglePackagesStatusView.getPackageStatusElement(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
       expect($(element).attr('class')).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+      # Enable
       testDataHelper.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
       expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
+      expect($(element).attr('class')).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+      # Disable
+      testDataHelper.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
+      expect($(element).attr('class')).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
 
-      # TODO make the togglePackagesStatusView observe `core.disabledPackages`
-
-      # expect($(element).attr('class')).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
-
-    # TODO it "adds the disabled class to disabled packages", ->
+    it "toggles the disabled class starting from enabled", ->
+      element = togglePackagesStatusView.getPackageStatusElement(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
+      expect($(element).attr('class')).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+      # Disable
+      testDataHelper.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
+      expect($(element).attr('class')).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+      # Enable
+      testDataHelper.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
+      expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
+      expect($(element).attr('class')).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
 
     it "removes packages removed from the setting", ->
       packageToRemove = testDataHelper.VALID_PACKAGE_STARTS_ENABLED

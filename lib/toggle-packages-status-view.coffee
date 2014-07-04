@@ -45,7 +45,24 @@ class TogglePackagesStatusView extends View
       for addedPackage in addedPackages
         @addTogglePackage(addedPackage)
 
+    atom.config.observe 'core.disabledPackages', callNow: false, (disabledPackages, {previous} = {}) =>
+      enabledPackages = _.difference(previous, disabledPackages)
+      for enabledPackage in enabledPackages
+        @enablePackage(enabledPackage)
+
+      disabledPackages = _.difference(disabledPackages, previous)
+      for disabledPackage in disabledPackages
+        @disablePackage(disabledPackage)
+
   DISABLED_PACKAGE_CLASS: 'text-subtle'
+
+  enablePackage: (name) ->
+    element = @getPackageStatusElement(name)
+    element.removeClass(@DISABLED_PACKAGE_CLASS)
+
+  disablePackage: (name) ->
+    element = @getPackageStatusElement(name)
+    element.addClass(@DISABLED_PACKAGE_CLASS)
 
   removeTogglePackage: (name) ->
     element = @getPackageStatusElement(name)
