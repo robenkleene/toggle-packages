@@ -36,14 +36,14 @@ class TogglePackagesStatusView extends View
     @statusBar.appendLeft(this)
 
   afterAttach: ->
-    togglePackageNames = togglePackagesManager.getTogglePackageNames()
-    for name in togglePackageNames
-        @addTogglePackage(name)
-
-    atom.config.observe 'toggle-packages.togglePackages', callNow: false, (togglePackages, {previous}) =>
-      removedPackages = _.difference(previous, togglePackages);
+    atom.config.observe 'toggle-packages.togglePackages', callNow: true, (togglePackages, {previous} = {}) =>
+      removedPackages = _.difference(previous, togglePackages)
       for removedPackage in removedPackages
         @removeTogglePackage(removedPackage)
+
+      addedPackages = _.difference(togglePackages, previous)
+      for addedPackage in addedPackages
+        @addTogglePackage(addedPackage)
 
   DISABLED_PACKAGE_CLASS: 'text-subtle'
 

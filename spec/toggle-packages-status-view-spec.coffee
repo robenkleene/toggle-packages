@@ -108,6 +108,17 @@ describe "TogglePackagesStatusView", ->
       element = togglePackagesStatusView.getPackageStatusElement(packageToRemove)
       expect(element.length).toBe 0
 
+    it "adds packages added to the setting", ->
+      packageToAdd = "package-name"
+      element = togglePackagesStatusView.getPackageStatusElement(packageToAdd)
+      expect(element.length).toBe 0
+      togglePackages = atom.config.get('toggle-packages.togglePackages')
+      togglePackages.push(packageToAdd)
+      atom.config.set('toggle-packages.togglePackages', togglePackages)
+      element = togglePackagesStatusView.getPackageStatusElement(packageToAdd)
+      expect(element.length).toBe 1
+
+
   describe "addTogglePackage(name)", ->
 
     it "adds the package display name", ->
