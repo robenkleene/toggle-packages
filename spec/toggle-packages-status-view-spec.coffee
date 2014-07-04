@@ -75,14 +75,22 @@ describe "TogglePackagesStatusView", ->
       .get();
       expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES
 
-    it "disable packages have the disable class applied", ->
-      elements = view.togglePackages.find('a')
-      packageNames = elements.map (i, element) =>
-          element_class = $(element).attr('class')
-          if $(element).text() is testDataHelper.VALID_PACKAGE_STARTS_ENABLED_DISPLAY_NAME
-            expect(element_class).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
-          else if $(element).text() is testDataHelper.VALID_PACKAGE_STARTS_DISABLED_DISPLAY_NAME
-            expect(element_class).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+    it "makes packages have the right text and attributes", ->
+      element = view.togglePackages.find("##{testDataHelper.VALID_PACKAGE_STARTS_ENABLED}")
+      expect($(element).attr('class')).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+      expect($(element).text()).toBe testDataHelper.VALID_PACKAGE_STARTS_ENABLED_DISPLAY_NAME
+      expect($(element).attr('id')).toBe testDataHelper.VALID_PACKAGE_STARTS_ENABLED
+
+      element = view.togglePackages.find("##{testDataHelper.VALID_PACKAGE_STARTS_DISABLED}")
+      expect($(element).attr('class')).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+      expect($(element).text()).toBe testDataHelper.VALID_PACKAGE_STARTS_DISABLED_DISPLAY_NAME
+      expect($(element).attr('id')).toBe testDataHelper.VALID_PACKAGE_STARTS_DISABLED
+
+    # it "removes the disabled class from enabled packages", ->
+    #   packageStatusElement = togglePackagesStatusView.getPackageStatusElement(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
+    #   expect($(packageStatusElement).attr('class')).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
+    #   console.log "packageStatusElement = #{packageStatusElement.html()}"
+
 
   describe "addTogglePackage(name)", ->
 

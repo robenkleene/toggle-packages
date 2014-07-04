@@ -11,6 +11,11 @@ class TogglePackagesStatusView extends View
   initialize: (@statusBar) ->
     # atom.config.observe 'toggle-packages.togglePackages', =>
     #   @attach()
+    # atom.packages.on 'activatePackage', (args) =>
+    #   console.log args
+    atom.packages.on 'enablePackage', (args) =>
+      console.log "enabledPackage with " + args
+
 
   destroy: ->
     @detach()
@@ -19,6 +24,7 @@ class TogglePackagesStatusView extends View
     @statusBar.appendLeft(this)
 
   afterAttach: ->
+    # @packageStatusElements = {}
     togglePackageNames = togglePackagesManager.getTogglePackageNames()
     for name in togglePackageNames
         @addTogglePackage(name)
@@ -26,11 +32,14 @@ class TogglePackagesStatusView extends View
   DISABLED_PACKAGE_CLASS: 'text-subtle'
   addTogglePackage: (name) ->
     displayName = @getPackageDisplayName(name)
-    packageHTML = " <a href=\"#\">#{displayName}</a>"
+    packageHTML = " <a href=\"#\" id=\"#{name}\">#{displayName}</a>"
     if not togglePackagesManager.isPackageEnabled(name)
-      packageHTML = " <a href=\"#\" class=\"#{@DISABLED_PACKAGE_CLASS}\">#{displayName}</a>"
-    else
+      packageHTML = " <a href=\"#\" id=\"#{name}\" class=\"#{@DISABLED_PACKAGE_CLASS}\">#{displayName}</a>"
     @togglePackages.append(packageHTML)
+    # @packageStatusElements[name] = @togglePackages.append(packageHTML)
 
   getPackageDisplayName: (name) ->
     _.undasherize(_.uncamelcase(name))
+
+  # getPackageStatusElement: (name) ->
+  #   @packageStatusElements[name]
