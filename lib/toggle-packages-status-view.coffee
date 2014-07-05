@@ -55,6 +55,8 @@ class TogglePackagesStatusView extends View
     element.remove()
 
   addTogglePackage: (name) ->
+    if !togglePackagesManager.isValidPackage(name)
+      return
     packageElement = $("<a>")
     packageElement.attr("id", name)
     packageElement.append(@getPackageDisplayName(name))

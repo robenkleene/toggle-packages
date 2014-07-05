@@ -72,7 +72,7 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       packageNames = elements.map (i, element) =>
           $(element).text()
       .get();
-      expect(packageNames).toEqual testDataHelper.TOGGLE_PACKAGE_DISPLAY_NAME
+      expect(packageNames).toEqual testDataHelper.STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
 
     it "makes packages have the right text and attributes", ->
       element = view.togglePackages.find("##{testDataHelper.VALID_PACKAGE_STARTS_ENABLED}")
@@ -120,7 +120,7 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       expect(element.length).toBe 0
 
     it "adds packages added to config", ->
-      packageToAdd = "package-name"
+      packageToAdd = testDataHelper.VALID_PACKAGE_STARTS_DISABLED_NOT_TOGGLE_PACKAGE
       element = togglePackagesStatusView.getPackageStatusElement(packageToAdd)
       expect(element.length).toBe 0
       togglePackages = atom.config.get('toggle-packages.togglePackages')
@@ -129,22 +129,46 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       element = togglePackagesStatusView.getPackageStatusElement(packageToAdd)
       expect(element.length).toBe 1
 
+    it "logs a warning when adding an invalid package", ->
+      spyOn(console, 'warn').andCallFake =>
+      packageToAdd = testDataHelper.INVALID_PACKAGE
+      togglePackages = atom.config.get('toggle-packages.togglePackages')
+      togglePackages.push(packageToAdd)
+      atom.config.set('toggle-packages.togglePackages', togglePackages)
+      element = togglePackagesStatusView.getPackageStatusElement(packageToAdd)
+      expect(element.length).toBe 0
+      expect(console.warn).toHaveBeenCalled()
+      expect(console.warn.callCount).toBe 1
+
 
   describe "addTogglePackage(name)", ->
 
     it "adds the package display name", ->
-      togglePackagesStatusView.addTogglePackage("package-name")
+      togglePackagesStatusView.addTogglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED_NOT_TOGGLE_PACKAGE)
       elements = view.togglePackages.find('a')
       expect(elements.length).toBe testDataHelper.available_toggle_packages.length + 1
       packageNames = elements.map (i, element) =>
           # Test the disabled class for the added package
           element_class = $(element).attr('class')
-          if $(element).text() is "Package Name"
+          if $(element).text() is testDataHelper.VALID_PACKAGE_STARTS_DISABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
             expect(element_class).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
           # Return the text
           $(element).text()
       .get();
-      expect(packageNames).toEqual testDataHelper.TOGGLE_PACKAGE_DISPLAY_NAME.concat ["Package Name"]
+      expect(packageNames).toEqual testDataHelper.STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES.concat testDataHelper.VALID_PACKAGE_STARTS_DISABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
+
+    it "adds logs a warning when adding an invalid package", ->
+      spyOn(console, 'warn').andCallFake =>
+      togglePackagesStatusView.addTogglePackage(testDataHelper.INVALID_PACKAGE)
+      expect(console.warn).toHaveBeenCalled()
+      expect(console.warn.callCount).toBe 1
+      elements = view.togglePackages.find('a')
+      expect(elements.length).toBe testDataHelper.available_toggle_packages.length
+      packageNames = elements.map (i, element) =>
+          $(element).text()
+      .get();
+      expect(packageNames).toEqual testDataHelper.STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
+
 
 describe "TogglePackagesStatusView with setupExamplePackages()", ->
   [togglePackagesStatusView, view] = []
