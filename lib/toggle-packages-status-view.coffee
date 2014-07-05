@@ -8,17 +8,18 @@ class TogglePackagesStatusView extends View
     @div class: 'toggle-packages-wrapper inline-block', =>
       @div outlet: 'togglePackages'
 
-  initialize: (@statusBar) ->
-
-  updateTogglePackages: ->
-    togglePackages = togglePackagesManager.getTogglePackageNames()
-    disabledPackages = atom.config.get 'core.disabledPackages'
+  initialize: ->
+    @attach()
 
   destroy: ->
-    @detach()
+    @remove()
 
-  attach: ->
-    @statusBar.appendLeft(this)
+  attach: =>
+    statusBar = atom.workspaceView.statusBar
+    if statusBar
+      statusBar.appendLeft(this)
+    else
+      @subscribe(atom.packages.once('activated', @attach))
 
   afterAttach: ->
     atom.config.observe 'toggle-packages.togglePackages', callNow: true, (togglePackages, {previous} = {}) =>

@@ -52,8 +52,7 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
     runs ->
       atom.workspaceView.statusBar = new StatusBarMock()
       atom.workspaceView.statusBar.attach()
-      togglePackagesStatusView = new TogglePackagesStatusView(atom.workspaceView.statusBar)
-      togglePackagesStatusView.attach()
+      togglePackagesStatusView = new TogglePackagesStatusView()
       view = atom.workspaceView.statusBar.leftPanel.children().view()
 
   afterEach ->
@@ -160,8 +159,7 @@ describe "TogglePackagesStatusView with setupExamplePackages()", ->
     runs ->
       atom.workspaceView.statusBar = new StatusBarMock()
       atom.workspaceView.statusBar.attach()
-      togglePackagesStatusView = new TogglePackagesStatusView(atom.workspaceView.statusBar)
-      togglePackagesStatusView.attach()
+      togglePackagesStatusView = new TogglePackagesStatusView()
       view = atom.workspaceView.statusBar.leftPanel.children().view()
 
   afterEach ->
