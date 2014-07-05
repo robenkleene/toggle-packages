@@ -45,15 +45,10 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
   beforeEach ->
     atom.workspaceView = new WorkspaceView
     testDataHelper.setupMockPackages()
-
-    waitsForPromise ->
-      atom.packages.activatePackage('toggle-packages')
-
-    runs ->
-      atom.workspaceView.statusBar = new StatusBarMock()
-      atom.workspaceView.statusBar.attach()
-      togglePackagesStatusView = new TogglePackagesStatusView()
-      view = atom.workspaceView.statusBar.leftPanel.children().view()
+    atom.workspaceView.statusBar = new StatusBarMock()
+    atom.workspaceView.statusBar.attach()
+    togglePackagesStatusView = new TogglePackagesStatusView()
+    view = atom.workspaceView.statusBar.leftPanel.children().view()
 
   afterEach ->
     atom.workspaceView.statusBar.remove()
@@ -140,7 +135,6 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       expect(console.warn).toHaveBeenCalled()
       expect(console.warn.callCount).toBe 1
 
-
   describe "addTogglePackage(name)", ->
 
     it "adds the package display name", ->
@@ -169,22 +163,17 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       .get();
       expect(packageNames).toEqual testDataHelper.STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
 
-
 describe "TogglePackagesStatusView with setupExamplePackages()", ->
   [togglePackagesStatusView, view] = []
 
   beforeEach ->
     atom.workspaceView = new WorkspaceView
     testDataHelper.setupExamplePackages()
+    atom.workspaceView.statusBar = new StatusBarMock()
+    atom.workspaceView.statusBar.attach()
+    togglePackagesStatusView = new TogglePackagesStatusView()
+    view = atom.workspaceView.statusBar.leftPanel.children().view()
 
-    waitsForPromise ->
-      atom.packages.activatePackage('toggle-packages')
-
-    runs ->
-      atom.workspaceView.statusBar = new StatusBarMock()
-      atom.workspaceView.statusBar.attach()
-      togglePackagesStatusView = new TogglePackagesStatusView()
-      view = atom.workspaceView.statusBar.leftPanel.children().view()
 
   afterEach ->
     atom.workspaceView.statusBar.remove()
