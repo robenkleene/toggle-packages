@@ -44,7 +44,14 @@ describe "TogglePackages", ->
     atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE}"
     expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe false
 
-# it throws a warning when adding invalid packages
+  it "logs a warning ", ->
+    spyOn(console, 'warn')
+    togglePackages = atom.config.get('toggle-packages.togglePackages')
+    togglePackages.push(testDataHelper.INVALID_PACKAGE)
+    atom.config.set('toggle-packages.togglePackages', togglePackages)
+    expect(console.warn).toHaveBeenCalled()
+    expect(console.warn.callCount).toBe 1
+    # TODO should also test that this doesn't add a command
 
 # it "removes commands for packages removed from config", ->
   # it only adds commands for valid packages

@@ -130,7 +130,7 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       expect(element.length).toBe 1
 
     it "logs a warning when adding an invalid package", ->
-      spyOn(console, 'warn').andCallFake =>
+      spyOn(console, 'warn')
       packageToAdd = testDataHelper.INVALID_PACKAGE
       togglePackages = atom.config.get('toggle-packages.togglePackages')
       togglePackages.push(packageToAdd)
@@ -158,7 +158,7 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       expect(packageNames).toEqual testDataHelper.STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES.concat testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
 
     it "adds logs a warning when adding an invalid package", ->
-      spyOn(console, 'warn').andCallFake =>
+      spyOn(console, 'warn')
       togglePackagesStatusView.addTogglePackage(testDataHelper.INVALID_PACKAGE)
       expect(console.warn).toHaveBeenCalled()
       expect(console.warn.callCount).toBe 1
