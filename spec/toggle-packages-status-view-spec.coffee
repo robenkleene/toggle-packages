@@ -66,13 +66,13 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
 
   describe "the attached view", ->
 
-    it "shows the valid packages", ->
+    it "shows the valid toggle packages", ->
       elements = view.togglePackages.find('a')
       expect(elements.length).toBe testDataHelper.available_toggle_packages.length
       packageNames = elements.map (i, element) =>
           $(element).text()
       .get();
-      expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES
+      expect(packageNames).toEqual testDataHelper.TOGGLE_PACKAGE_DISPLAY_NAME
 
     it "makes packages have the right text and attributes", ->
       element = view.togglePackages.find("##{testDataHelper.VALID_PACKAGE_STARTS_ENABLED}")
@@ -144,7 +144,7 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
           # Return the text
           $(element).text()
       .get();
-      expect(packageNames).toEqual testDataHelper.AVAILABLE_PACKAGE_DISPLAY_NAMES.concat ["Package Name"]
+      expect(packageNames).toEqual testDataHelper.TOGGLE_PACKAGE_DISPLAY_NAME.concat ["Package Name"]
 
 describe "TogglePackagesStatusView with setupExamplePackages()", ->
   [togglePackagesStatusView, view] = []

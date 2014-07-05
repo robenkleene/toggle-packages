@@ -22,7 +22,7 @@ describe "TogglePackagesManager with setupMockPackages()", ->
   describe "getTogglePackageNames()", ->
 
     it "returns only valid packages and logs a warning for invalid packages", ->
-      atom.config.set("toggle-packages.togglePackages", testDataHelper.TOGGLE_PACKAGES.concat([testDataHelper.INVALID_PACKAGE]))
+      atom.config.set("toggle-packages.togglePackages", testDataHelper.STARTING_TOGGLE_PACKAGES.concat([testDataHelper.INVALID_PACKAGE]))
       spyOn(console, 'warn').andCallFake =>
       expect(togglePackagesManager.getTogglePackageNames()).toEqual testDataHelper.available_toggle_packages
       expect(console.warn).toHaveBeenCalled()
@@ -44,7 +44,7 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
   describe "getTogglePackageNames()", ->
 
     it "returns only valid packages and logs a warning for invalid packages", ->
-      atom.config.set("toggle-packages.togglePackages", testDataHelper.TOGGLE_PACKAGES.concat([testDataHelper.INVALID_PACKAGE]))
+      atom.config.set("toggle-packages.togglePackages", testDataHelper.STARTING_TOGGLE_PACKAGES.concat([testDataHelper.INVALID_PACKAGE]))
       spyOn(console, 'warn').andCallFake =>
       expect(togglePackagesManager.getTogglePackageNames()).toEqual testDataHelper.available_toggle_packages
       expect(console.warn).toHaveBeenCalled()
