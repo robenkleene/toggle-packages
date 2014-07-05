@@ -18,7 +18,7 @@ describe "TogglePackages", ->
   it "adds toggle commands for enabled packages", ->
     testPackage = testDataHelper.VALID_PACKAGE_STARTS_ENABLED
     testCommand = "toggle-packages:toggle-#{testPackage}"
-    # TODO Test command exists
+    expect(testDataHelper.commandExists(testCommand)).toBe true
     expect(atom.packages.isPackageDisabled(testPackage)).toBe false
     atom.workspaceView.trigger testCommand
     expect(atom.packages.isPackageDisabled(testPackage)).toBe true
@@ -28,7 +28,7 @@ describe "TogglePackages", ->
   it "adds toggle commands for disabled packages", ->
     testPackage = testDataHelper.VALID_PACKAGE_STARTS_DISABLED
     testCommand = "toggle-packages:toggle-#{testPackage}"
-    # TODO Test command exists
+    expect(testDataHelper.commandExists(testCommand)).toBe true
     expect(atom.packages.isPackageDisabled(testPackage)).toBe true
     atom.workspaceView.trigger testCommand
     expect(atom.packages.isPackageDisabled(testPackage)).toBe false
@@ -38,8 +38,8 @@ describe "TogglePackages", ->
   it "adds commands for packages added to config", ->
     testPackage = testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE
     testCommand = "toggle-packages:toggle-#{testPackage}"
+    expect(testDataHelper.commandExists(testCommand)).toBe false
     # Test command fails for package before adding to config
-    # TODO Test command does not exist
     expect(atom.packages.isPackageDisabled(testPackage)).toBe false
     atom.workspaceView.trigger testCommand
     expect(atom.packages.isPackageDisabled(testPackage)).toBe false
@@ -63,8 +63,7 @@ describe "TogglePackages", ->
     atom.config.set('toggle-packages.togglePackages', togglePackages)
     expect(console.warn).toHaveBeenCalled()
     expect(console.warn.callCount).toBe 1
-    # TODO should also test that this doesn't add a command
-    testDataHelper.commandExists(testCommand)
+    expect(testDataHelper.commandExists(testCommand)).toBe false
 
 # it "removes commands for packages removed from config", ->
   # it only adds commands for valid packages
