@@ -19,9 +19,15 @@ describe "TogglePackages", ->
     expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
     atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED}"
     expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
+    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED}"
+    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
 
-  # it "adds toggle commands for disabled packages", ->
-  #   expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
+  it "adds toggle commands for disabled packages", ->
+    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
+    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_DISABLED}"
+    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
+    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_DISABLED}"
+    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
 
   # it only adds commands for valid packages
   # it throws a warning when adding invalid packages
