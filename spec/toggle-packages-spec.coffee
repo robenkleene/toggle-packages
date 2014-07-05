@@ -29,10 +29,22 @@ describe "TogglePackages", ->
     atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_DISABLED}"
     expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
 
-  # it only adds commands for valid packages
-  # it throws a warning when adding invalid packages
+  it "adds commands for packages added to config", ->
+    # Test command fails for package not in config
+    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe false
+    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE}"
+    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe false
+    # Add to config
+    togglePackages = atom.config.get('toggle-packages.togglePackages')
+    togglePackages.push(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)
+    atom.config.set('toggle-packages.togglePackages', togglePackages)
+    # Test command works
+    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE}"
+    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe true
+    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE}"
+    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe false
 
-    #
-    # it "adds commands for packages added to config", ->
-    #
-    # it "removes commands for packages removed from config", ->
+# it throws a warning when adding invalid packages
+
+# it "removes commands for packages removed from config", ->
+  # it only adds commands for valid packages

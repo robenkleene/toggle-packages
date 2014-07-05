@@ -120,7 +120,7 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       expect(element.length).toBe 0
 
     it "adds packages added to config", ->
-      packageToAdd = testDataHelper.VALID_PACKAGE_STARTS_DISABLED_NOT_TOGGLE_PACKAGE
+      packageToAdd = testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE
       element = togglePackagesStatusView.getPackageStatusElement(packageToAdd)
       expect(element.length).toBe 0
       togglePackages = atom.config.get('toggle-packages.togglePackages')
@@ -144,18 +144,18 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
   describe "addTogglePackage(name)", ->
 
     it "adds the package display name", ->
-      togglePackagesStatusView.addTogglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED_NOT_TOGGLE_PACKAGE)
+      togglePackagesStatusView.addTogglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)
       elements = view.togglePackages.find('a')
       expect(elements.length).toBe testDataHelper.available_toggle_packages.length + 1
       packageNames = elements.map (i, element) =>
           # Test the disabled class for the added package
           element_class = $(element).attr('class')
-          if $(element).text() is testDataHelper.VALID_PACKAGE_STARTS_DISABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
+          if $(element).text() is testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
             expect(element_class).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
           # Return the text
           $(element).text()
       .get();
-      expect(packageNames).toEqual testDataHelper.STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES.concat testDataHelper.VALID_PACKAGE_STARTS_DISABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
+      expect(packageNames).toEqual testDataHelper.STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES.concat testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
 
     it "adds logs a warning when adding an invalid package", ->
       spyOn(console, 'warn').andCallFake =>
