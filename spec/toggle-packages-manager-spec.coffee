@@ -19,15 +19,6 @@ describe "TogglePackagesManager with setupMockPackages()", ->
       expect(togglePackagesManager.isValidPackage(testDataHelper.INVALID_PACKAGE)).toBe false
       expect(console.warn).toHaveBeenCalled()
 
-  describe "getTogglePackageNames()", ->
-
-    it "returns only valid packages and logs a warning for invalid packages", ->
-      atom.config.set("toggle-packages.togglePackages", testDataHelper.STARTING_TOGGLE_PACKAGES.concat([testDataHelper.INVALID_PACKAGE]))
-      spyOn(console, 'warn').andCallFake =>
-      expect(togglePackagesManager.getTogglePackageNames()).toEqual testDataHelper.available_toggle_packages
-      expect(console.warn).toHaveBeenCalled()
-      expect(console.warn.callCount).toBe 1
-
   describe "isPackageEnabled(name)", ->
 
     it "returns true for enabled packages", ->
@@ -40,15 +31,6 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
 
   beforeEach ->
     testDataHelper.setupExamplePackages()
-
-  describe "getTogglePackageNames()", ->
-
-    it "returns only valid packages and logs a warning for invalid packages", ->
-      atom.config.set("toggle-packages.togglePackages", testDataHelper.STARTING_TOGGLE_PACKAGES.concat([testDataHelper.INVALID_PACKAGE]))
-      spyOn(console, 'warn').andCallFake =>
-      expect(togglePackagesManager.getTogglePackageNames()).toEqual testDataHelper.available_toggle_packages
-      expect(console.warn).toHaveBeenCalled()
-      expect(console.warn.callCount).toBe 1
 
   describe "isPackageEnabled(name)", ->
 
