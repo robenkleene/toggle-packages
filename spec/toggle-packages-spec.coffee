@@ -16,42 +16,55 @@ describe "TogglePackages", ->
       atom.workspace.open()
 
   it "adds toggle commands for enabled packages", ->
-    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
-    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED}"
-    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
-    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED}"
-    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
+    testPackage = testDataHelper.VALID_PACKAGE_STARTS_ENABLED
+    testCommand = "toggle-packages:toggle-#{testPackage}"
+    # TODO Test command exists
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe false
+    atom.workspaceView.trigger testCommand
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe true
+    atom.workspaceView.trigger testCommand
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe false
 
   it "adds toggle commands for disabled packages", ->
-    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
-    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_DISABLED}"
-    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
-    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_DISABLED}"
-    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
+    testPackage = testDataHelper.VALID_PACKAGE_STARTS_DISABLED
+    testCommand = "toggle-packages:toggle-#{testPackage}"
+    # TODO Test command exists
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe true
+    atom.workspaceView.trigger testCommand
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe false
+    atom.workspaceView.trigger testCommand
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe true
 
   it "adds commands for packages added to config", ->
-    # Test command fails for package not in config
-    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe false
-    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE}"
-    expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe false
+    testPackage = testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE
+    testCommand = "toggle-packages:toggle-#{testPackage}"
+    # Test command fails for package before adding to config
+    # TODO Test command does not exist
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe false
+    atom.workspaceView.trigger testCommand
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe false
     # Add to config
     togglePackages = atom.config.get('toggle-packages.togglePackages')
-    togglePackages.push(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)
+    togglePackages.push(testPackage)
     atom.config.set('toggle-packages.togglePackages', togglePackages)
     # Test command works
-    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE}"
+    # TODO Test command exists
+    atom.workspaceView.trigger testCommand
     expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe true
-    atom.workspaceView.trigger "toggle-packages:toggle-#{testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE}"
+    atom.workspaceView.trigger testCommand
     expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe false
 
-  it "logs a warning ", ->
+  it "logs a warning when adding an invalid package to config", ->
+    testPackage = testDataHelper.INVALID_PACKAGE
+    testCommand = "toggle-packages:toggle-#{testPackage}"
     spyOn(console, 'warn')
     togglePackages = atom.config.get('toggle-packages.togglePackages')
-    togglePackages.push(testDataHelper.INVALID_PACKAGE)
+    togglePackages.push(testPackage)
     atom.config.set('toggle-packages.togglePackages', togglePackages)
     expect(console.warn).toHaveBeenCalled()
     expect(console.warn.callCount).toBe 1
     # TODO should also test that this doesn't add a command
+    testDataHelper.commandExists(testCommand)
 
 # it "removes commands for packages removed from config", ->
   # it only adds commands for valid packages

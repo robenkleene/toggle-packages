@@ -54,3 +54,17 @@ exports.setupExamplePackages = ->
 
   runs =>
     atom.packages.disablePackage(@VALID_PACKAGE_STARTS_DISABLED)
+
+exports.commandExists = (command) ->
+  {$} = require 'atom'
+  _ = require 'underscore-plus'
+  @eventElement = atom.workspaceView
+  # events = []
+  exists = false
+  for eventName, eventDescription of _.extend($(window).events(), @eventElement.events())
+    if eventName is command
+      exists = true
+  #   events.push({eventName, eventDescription}) if eventDescription
+  #   events = _.sortBy(events, 'eventDescription')
+  # console.log events
+  exists
