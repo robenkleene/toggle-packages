@@ -6,8 +6,8 @@ module.exports =
   togglePackagesView: null
   configDefaults:
     togglePackages: [
-      'vim-mode',
-      'emmet'
+      'wrap-guide',
+      'git-diff'
     ]
 
   activate: ->
