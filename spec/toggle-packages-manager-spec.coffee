@@ -15,9 +15,13 @@ describe "TogglePackagesManager with setupMockPackages()", ->
       expect(console.warn).not.toHaveBeenCalled()
 
     it "returns false and logs a warning for invalid packages", ->
-      spyOn(console, 'warn')
       expect(togglePackagesManager.isValidPackage(testDataHelper.INVALID_PACKAGE)).toBe false
-      expect(console.warn).toHaveBeenCalled()
+
+    it "returns false and logs a warning for empty name", ->
+      expect(togglePackagesManager.isValidPackage('')).toBe false
+
+    it "returns false and logs a warning for an invalid name", ->
+      expect(togglePackagesManager.isValidPackage('invalid name')).toBe false
 
   describe "isPackageEnabled(name)", ->
 

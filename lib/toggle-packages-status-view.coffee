@@ -56,6 +56,7 @@ class TogglePackagesStatusView extends View
 
   addTogglePackage: (name) ->
     if !togglePackagesManager.isValidPackage(name)
+      console.warn "'#{name}' is not an available package name"
       return
     packageElement = $("<a>")
     packageElement.attr("id", name)

@@ -1,8 +1,9 @@
 exports.isValidPackage = (name) ->
-  valid = atom.packages.getAvailablePackageNames().indexOf(name) isnt -1
-  unless valid
-    console.warn "'#{name}' is not an available package name"
-  valid
+  if not name
+    return false
+  if name.indexOf(' ') > -1
+    return false
+  atom.packages.getAvailablePackageNames().indexOf(name) isnt -1
 
 exports.isPackageEnabled = (name) ->
   not atom.packages.isPackageDisabled(name)

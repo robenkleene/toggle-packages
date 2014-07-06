@@ -27,6 +27,7 @@ module.exports =
 
   addTogglePackageCommand: (name) ->
     if !togglePackagesManager.isValidPackage(name)
+      console.warn "'#{name}' is not an available package name"
       return
     atom.workspaceView.command "toggle-packages:toggle-#{name}", => @togglePackage(name)
 
