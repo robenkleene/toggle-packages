@@ -1,9 +1,12 @@
 exports.isValidPackage = (name) ->
-  if not name
-    return false
-  if name.indexOf(' ') > -1
+  if not @isValidPackageName(name)
     return false
   atom.packages.getAvailablePackageNames().indexOf(name) isnt -1
+
+exports.isValidPackageName = (name) ->
+  if not name
+    return false
+  /^[a-z0-9\-]+$/.test(name)
 
 exports.isPackageEnabled = (name) ->
   not atom.packages.isPackageDisabled(name)

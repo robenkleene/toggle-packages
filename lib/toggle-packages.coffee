@@ -32,6 +32,8 @@ module.exports =
     atom.workspaceView.command "toggle-packages:toggle-#{name}", => @togglePackage(name)
 
   removeTogglePackageCommand: (name) ->
+    if not togglePackagesManager.isValidPackageName(name)
+      return
     # TODO implement
 
   togglePackage: (name) =>

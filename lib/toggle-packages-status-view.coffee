@@ -52,7 +52,7 @@ class TogglePackagesStatusView extends View
 
   removeTogglePackage: (name) ->
     element = @getPackageStatusElement(name)
-    element.remove()
+    element?.remove()
 
   addTogglePackage: (name) ->
     if !togglePackagesManager.isValidPackage(name)
@@ -72,4 +72,6 @@ class TogglePackagesStatusView extends View
     _.undasherize(_.uncamelcase(name))
 
   getPackageStatusElement: (name) ->
+    if not togglePackagesManager.isValidPackageName(name)
+      return
     @togglePackages.find("##{name}")
