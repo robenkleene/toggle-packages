@@ -1,4 +1,4 @@
-# Toggle Packages
+# Toggle Packages [![Build Status](https://travis-ci.org/robenkleene/toggle-packages.svg?branch=master)](https://travis-ci.org/robenkleene/toggle-packages)
 
 A package for enabling and disabling packages.
 
