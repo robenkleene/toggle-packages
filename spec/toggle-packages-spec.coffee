@@ -48,7 +48,7 @@ describe "TogglePackages", ->
     togglePackages.push(testPackage)
     atom.config.set('toggle-packages.togglePackages', togglePackages)
     # Test command works
-    # TODO Test command exists
+    expect(testDataHelper.commandExists(testCommand)).toBe true
     atom.workspaceView.trigger testCommand
     expect(atom.packages.isPackageDisabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)).toBe true
     atom.workspaceView.trigger testCommand
