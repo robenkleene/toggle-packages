@@ -1,5 +1,16 @@
-# toggle-packages package
+# Toggle Packages
 
-A short description of your package.
+A package for enabling and disabling packages.
 
-![A screenshot of your spankin' package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+![Toggle Packages](docs/toggle-packages.gif)
+*Enabling and disabling the built-in "Wrap Guide" and "Git Diff" packages.*
+
+It displays the status of packages in the status bar. Disabled packages are dimmed. Clicking a package name toggles it.
+
+It also creates commands for toggling packages.
+
+![Toggle Packages](docs/toggle-packages-status-and-commands.png)
+
+A setting controls which packages to enable toggling for.
+
+![Toggle Packages](docs/toggle-packages-settings.png)

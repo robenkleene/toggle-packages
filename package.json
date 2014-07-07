@@ -1,8 +1,8 @@
 {
   "name": "toggle-packages",
   "main": "./lib/toggle-packages",
-  "version": "0.0.0",
-  "description": "A short description of your package",
+  "version": "0.1.0",
+  "description": "A package for enabling and disabling packages",
   "repository": "https://github.com/atom/toggle-packages",
   "license": "MIT",
   "engines": {
