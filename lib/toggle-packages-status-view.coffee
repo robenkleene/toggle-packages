@@ -19,26 +19,30 @@ class TogglePackagesStatusView extends View
     if statusBar
       statusBar.appendLeft(this)
     else
-      @subscribe(atom.packages.once('activated', @attach))
+      atom.packages.onDidActivateAll(@attach)
 
   afterAttach: ->
-    atom.config.observe 'toggle-packages.togglePackages', callNow: true, (togglePackages, {previous} = {}) =>
-      removedPackages = _.difference(previous, togglePackages)
+    togglePackagesChangeHandler = (newValue, oldValue) =>
+      removedPackages = _.difference(oldValue, newValue)
       for removedPackage in removedPackages
         @removeTogglePackage(removedPackage)
-
-      addedPackages = _.difference(togglePackages, previous)
+      addedPackages = _.difference(newValue, oldValue)
       for addedPackage in addedPackages
         @addTogglePackage(addedPackage)
+    atom.config.onDidChange 'toggle-packages.togglePackages', ({newValue, oldValue}) ->
+      togglePackagesChangeHandler(newValue, oldValue)
+    togglePackagesChangeHandler(atom.config.get('toggle-packages.togglePackages'), [])
 
-    atom.config.observe 'core.disabledPackages', callNow: false, (disabledPackages, {previous} = {}) =>
-      enabledPackages = _.difference(previous, disabledPackages)
+    disabledPackagesChangeHandler = (newValue, oldValue) =>
+      enabledPackages = _.difference(oldValue, newValue)
       for enabledPackage in enabledPackages
         @enablePackage(enabledPackage)
-
-      disabledPackages = _.difference(disabledPackages, previous)
+      disabledPackages = _.difference(newValue, oldValue)
       for disabledPackage in disabledPackages
         @disablePackage(disabledPackage)
+    atom.config.onDidChange 'core.disabledPackages', ({newValue, oldValue}) ->
+      disabledPackagesChangeHandler(newValue, oldValue)
+    disabledPackagesChangeHandler(atom.config.get('core.disabledPackages'), [])
 
   DISABLED_PACKAGE_CLASS: 'text-subtle'
 

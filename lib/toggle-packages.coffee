@@ -13,14 +13,16 @@ module.exports =
   activate: ->
     @togglePackagesStatusView = new TogglePackagesStatusView()
 
-    atom.config.observe 'toggle-packages.togglePackages', callNow: true, (togglePackages, {previous} = {}) =>
-      removedPackages = _.difference(previous, togglePackages)
+    togglePackagesChangeHandler = (newValue, oldValue) =>
+      removedPackages = _.difference(oldValue, newValue)
       for removedPackage in removedPackages
         @removeTogglePackageCommand(removedPackage)
-
-      addedPackages = _.difference(togglePackages, previous)
+      addedPackages = _.difference(newValue, oldValue)
       for addedPackage in addedPackages
         @addTogglePackageCommand(addedPackage)
+    atom.config.onDidChange 'toggle-packages.togglePackages', ({newValue, oldValue}) ->
+      togglePackagesChangeHandler(newValue, oldValue)
+    togglePackagesChangeHandler(atom.config.get('toggle-packages.togglePackages'), [])
 
   deactivate: ->
     @togglePackagesStatusView.destroy()
