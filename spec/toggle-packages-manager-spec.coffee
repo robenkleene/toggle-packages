@@ -61,7 +61,7 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
     it "makes 'atom.config' update 'core.disabledPackages' when a package becomes enabled", ->
       expect((atom.config.get 'core.disabledPackages').indexOf(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).not.toBe -1
       atom.config.onDidChange 'core.disabledPackages', ({newValue}) ->
-        expect(newValue.value.indexOf(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe -1
+        expect(newValue.indexOf(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe -1
       togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
 
     it "makes 'atom.config' update 'core.disabledPackages' when a package becomes disabled", ->
