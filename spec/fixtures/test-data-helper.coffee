@@ -8,7 +8,7 @@ exports.VALID_PACKAGE_STARTS_ENABLED_DISPLAY_NAME = "Package Without Module"
 exports.VALID_PACKAGE_STARTS_DISABLED = "package-with-stylesheets"
 exports.VALID_PACKAGE_STARTS_DISABLED_DISPLAY_NAME = "Package With Stylesheets"
 
-exports.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE = "package-with-snippets"
+exports.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE = "package-with-menus"
 exports.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES = "Package With Snippets"
 
 exports.INVALID_PACKAGE = "invalid-package"
