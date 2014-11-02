@@ -25,7 +25,7 @@ describe "activate()", ->
     runs ->
       atom.workspaceView.statusBar = new StatusBarMock()
       atom.workspaceView.statusBar.attach()
-      atom.packages.emit('activated')
+      atom.packages.emitter.emit 'did-activate-all'
 
       view = atom.workspaceView.statusBar.leftPanel.children().view()
       expect(view).toExist()
@@ -173,7 +173,6 @@ describe "TogglePackagesStatusView with setupExamplePackages()", ->
     atom.workspaceView.statusBar.attach()
     togglePackagesStatusView = new TogglePackagesStatusView()
     view = atom.workspaceView.statusBar.leftPanel.children().view()
-
 
   afterEach ->
     atom.workspaceView.statusBar.remove()

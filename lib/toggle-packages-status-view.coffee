@@ -12,6 +12,7 @@ class TogglePackagesStatusView extends View
     @attach()
 
   destroy: ->
+    @attachDisposable.dispose()
     @remove()
 
   attach: =>
@@ -19,7 +20,7 @@ class TogglePackagesStatusView extends View
     if statusBar
       statusBar.appendLeft(this)
     else
-      atom.packages.onDidActivateAll(@attach)
+      @attachDisposable = atom.packages.onDidActivateAll(@attach)
 
   afterAttach: ->
     togglePackagesChangeHandler = (newValue, oldValue) =>

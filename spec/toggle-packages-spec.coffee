@@ -15,6 +15,9 @@ describe "TogglePackages", ->
     waitsForPromise ->
       atom.workspace.open()
 
+  afterEach ->
+    atom.packages.deactivatePackage('toggle-packages')
+
   it "adds toggle commands for enabled packages", ->
     testPackage = testDataHelper.VALID_PACKAGE_STARTS_ENABLED
     testCommand = "toggle-packages:toggle-#{testPackage}"
