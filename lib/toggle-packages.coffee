@@ -38,5 +38,5 @@ module.exports =
       return
     # TODO implement
 
-  togglePackage: (name) =>
+  togglePackage: (name) ->
     togglePackagesManager.togglePackage(name)

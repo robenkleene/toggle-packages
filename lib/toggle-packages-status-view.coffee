@@ -66,7 +66,7 @@ class TogglePackagesStatusView extends View
     packageElement = $("<a>")
     packageElement.attr("id", name)
     packageElement.append(@getPackageDisplayName(name))
-    packageElement.click =>
+    packageElement.click ->
       togglePackagesManager.togglePackage(name)
     if not togglePackagesManager.isPackageEnabled(name)
       packageElement.addClass(@DISABLED_PACKAGE_CLASS)
