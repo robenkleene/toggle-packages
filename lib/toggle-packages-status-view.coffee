@@ -16,8 +16,8 @@ class TogglePackagesStatusView extends View
     @remove()
 
   attach: =>
-    statusBar = atom.workspaceView.statusBar
-    if statusBar
+    statusBar = atom.views.getView(atom.workspace).querySelector("status-bar")
+    if statusBar?
       statusBar.appendLeft(this)
     else
       @attachDisposable = atom.packages.onDidActivateAll(@attach)

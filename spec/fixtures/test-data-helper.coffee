@@ -55,12 +55,14 @@ exports.setupExamplePackages = ->
   runs =>
     atom.packages.disablePackage(@VALID_PACKAGE_STARTS_DISABLED)
 
-exports.commandExists = (command) ->
-  {$} = require 'atom'
-  _ = require 'underscore-plus'
-  @eventElement = atom.workspaceView
+exports.commandExists = (commandName) ->
+  # TODO Remove 'underscore-plus' as dependency?
+  # _ = require 'underscore-plus'
+  eventElement = atom.views.getView(atom.workspace)
+  commands = atom.commands.findCommands(target: eventElement)
   exists = false
-  for eventName, eventDescription of _.extend($(window).events(), @eventElement.events())
-    if eventName is command
+  for command in commands
+    if command.name is commandName
       exists = true
   exists
+
