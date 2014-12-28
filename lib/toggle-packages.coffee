@@ -11,7 +11,7 @@ module.exports =
     ]
 
   activate: ->
-    @togglePackagesStatusView = new TogglePackagesStatusView()
+    @togglePackagesStatusView = new TogglePackagesStatusView().initialize()
 
     togglePackagesChangeHandler = (newValue, oldValue) =>
       removedPackages = _.difference(oldValue, newValue)

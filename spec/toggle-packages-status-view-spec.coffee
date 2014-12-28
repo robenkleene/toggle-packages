@@ -1,43 +1,38 @@
-{$, WorkspaceView, View} = require 'atom'
+{$, WorkspaceView, View} = require 'atom' # TODO Do I need any of this?
 TogglePackages = require '../lib/toggle-packages'
 TogglePackagesStatusView = require '../lib/toggle-packages-status-view'
 testDataHelper = require './fixtures/test-data-helper'
 
-class StatusBarMock extends View
-  @content: ->
-    @div class: 'status-bar tool-panel panel-bottom', =>
-      @div outlet: 'leftPanel', class: 'status-bar-left'
-
-  attach: ->
-    atom.workspaceView.appendToTop(this)
-
-  appendLeft: (item) ->
-    @leftPanel.append(item)
-
 describe "activate()", ->
+  workspaceElement = null
 
   beforeEach ->
-    atom.workspaceView = new WorkspaceView
+    workspaceElement = atom.views.getView(atom.workspace)
+
+    waitsForPromise ->
+      atom.packages.activatePackage('status-bar')
 
     waitsForPromise ->
       atom.packages.activatePackage('toggle-packages')
 
+    waitsForPromise ->
+      atom.workspace.open()
+
     runs ->
-      atom.workspaceView.statusBar = new StatusBarMock()
-      atom.workspaceView.statusBar.attach()
       atom.packages.emitter.emit 'did-activate-all'
 
-      view = atom.workspaceView.statusBar.leftPanel.children().view()
-      expect(view).toExist()
-
   afterEach ->
-    atom.workspaceView.statusBar.remove()
-    atom.workspaceView.statusBar = null
+    # atom.workspaceView.statusBar.remove()
+    # atom.workspaceView.statusBar = null
+    atom.packages.deactivatePackage('toggle-packages')
 
   describe "activate()", ->
 
     it "appends only one .toggle-packages-wrapper", ->
-      expect(atom.workspaceView.vertical.find('.toggle-packages-wrapper').length).toBe 1
+      statusBarElement = workspaceElement.querySelector("status-bar")
+      togglePackagesNodeList = statusBarElement.querySelectorAll("toggle-packages")
+      expect(togglePackagesNodeList.length).toBe 1
+      # expect(atom.workspaceView.vertical.find('.toggle-packages-wrapper').length).toBe 1
 
 describe "TogglePackagesStatusView with setupMockPackages()", ->
   [togglePackagesStatusView, view] = []

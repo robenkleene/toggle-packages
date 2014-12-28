@@ -1,28 +1,29 @@
-{$, View} = require 'atom'
 _ = require 'underscore-plus'
 togglePackagesManager = require './toggle-packages-manager'
 
-module.exports =
-class TogglePackagesStatusView extends View
-  @content: ->
-    @div class: 'toggle-packages-wrapper inline-block', =>
-      @div outlet: 'togglePackages'
-
+class TogglePackagesStatusView extends HTMLDivElement
   initialize: ->
+    @classList.add('toggle-packages-wrapper', 'inline-block')
+    @togglePackagesLinks = document.createElement('div')
+    @appendChild(@togglePackagesLinks)
     @attach()
+    this
 
   destroy: ->
-    @attachDisposable.dispose()
-    @remove()
+    @activateDisposable?.dispose()
+    @statusBarTile?.destroy()
 
   attach: =>
     statusBar = atom.views.getView(atom.workspace).querySelector("status-bar")
     if statusBar?
-      statusBar.appendLeft(this)
+      @statusBarTile = statusBar.addLeftTile(item: this, priority: 20)
+      @setupChangeHandlers()
     else
-      @attachDisposable = atom.packages.onDidActivateAll(@attach)
+      @activateDisposable = atom.packages.onDidActivateAll =>
+        @activateDisposable.dispose()
+        @attach()
 
-  afterAttach: ->
+  setupChangeHandlers: ->
     togglePackagesChangeHandler = (newValue, oldValue) =>
       removedPackages = _.difference(oldValue, newValue)
       for removedPackage in removedPackages
@@ -48,35 +49,38 @@ class TogglePackagesStatusView extends View
   DISABLED_PACKAGE_CLASS: 'text-subtle'
 
   enablePackage: (name) ->
-    element = @getPackageStatusElement(name)
-    element.removeClass(@DISABLED_PACKAGE_CLASS)
+    packageLink = @getPackageStatusLink(name)
+    packageLink?.classList.remove(@DISABLED_PACKAGE_CLASS)
 
   disablePackage: (name) ->
-    element = @getPackageStatusElement(name)
-    element.addClass(@DISABLED_PACKAGE_CLASS)
+    packageLink = @getPackageStatusLink(name)
+    packageLink?.classList.add(@DISABLED_PACKAGE_CLASS)
 
   removeTogglePackage: (name) ->
-    element = @getPackageStatusElement(name)
-    element?.remove()
+    packageLink = @getPackageStatusLink(name)
+    if packageLink?
+      @togglePackagesLinks.removeChild(packageLink)
 
   addTogglePackage: (name) ->
     if !togglePackagesManager.isValidPackage(name)
       console.warn "'#{name}' is not an available package name"
       return
-    packageElement = $("<a>")
-    packageElement.attr("id", name)
-    packageElement.append(@getPackageDisplayName(name))
-    packageElement.click ->
+
+    packageLink = document.createElement('div')
+    packageLink.id = name
+    packageLink.textContent = @getPackageDisplayName(name)
+    packageLink.addEventListener 'click', ->
       togglePackagesManager.togglePackage(name)
+    @togglePackagesLinks.appendChild(packageLink)
     if not togglePackagesManager.isPackageEnabled(name)
-      packageElement.addClass(@DISABLED_PACKAGE_CLASS)
-    @togglePackages.append(" ")
-    @togglePackages.append(packageElement)
+      @disablePackage(name)
 
   getPackageDisplayName: (name) ->
     _.undasherize(_.uncamelcase(name))
 
-  getPackageStatusElement: (name) ->
+  getPackageStatusLink: (name) ->
     if not togglePackagesManager.isValidPackageName(name)
       return
-    @togglePackages.find("##{name}")
+    @togglePackagesLinks.querySelector "##{name}"    
+    
+module.exports = document.registerElement('toggle-packages', prototype: TogglePackagesStatusView.prototype)
