@@ -40,9 +40,6 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
     waitsForPromise ->
       atom.packages.activatePackage('status-bar')
 
-    # waitsForPromise ->
-    #   atom.workspace.open()
-
     runs ->
       testDataHelper.setupMockPackages()
       togglePackagesStatusView = new TogglePackagesStatusView().initialize()
@@ -51,6 +48,7 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
 
   afterEach ->
     togglePackagesStatusView.destroy()
+
 
   describe "getPackageDisplayName(name)", ->
 
@@ -134,39 +132,15 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       expect(console.warn).toHaveBeenCalled()
       expect(console.warn.callCount).toBe 1
 
-
-
-# Unprocessed below here
-
-describe "TogglePackagesStatusView with setupMockPackages()", ->
-  [togglePackagesStatusView, view] = []
-
-  beforeEach ->
-    atom.workspaceView = new WorkspaceView
-    testDataHelper.setupMockPackages()
-    atom.workspaceView.statusBar = new StatusBarMock()
-    atom.workspaceView.statusBar.attach()
-    togglePackagesStatusView = new TogglePackagesStatusView()
-    view = atom.workspaceView.statusBar.leftPanel.children().view()
-
-  afterEach ->
-    atom.workspaceView.statusBar.remove()
-    atom.workspaceView.statusBar = null
-
   describe "addTogglePackage(name)", ->
 
     it "adds the package display name", ->
       togglePackagesStatusView.addTogglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE)
-      elements = view.togglePackages.find('a')
-      expect(elements.length).toBe testDataHelper.available_toggle_packages.length + 1
-      packageNames = elements.map (i, element) =>
-          # Test the disabled class for the added package
-          element_class = $(element).attr('class')
-          if $(element).text() is testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
-            expect(element_class).not.toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
-          # Return the text
-          $(element).text()
-      .get();
+      nodeList = togglePackagesElement.querySelectorAll('a')
+      expect(nodeList.length).toBe testDataHelper.available_toggle_packages.length + 1
+      packageNames = []
+      for node in nodeList
+        packageNames.push node.innerText
       expect(packageNames).toEqual testDataHelper.STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES.concat testDataHelper.VALID_PACKAGE_STARTS_ENABLED_NOT_STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
 
     it "adds logs a warning when adding an invalid package", ->
@@ -174,27 +148,31 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       togglePackagesStatusView.addTogglePackage(testDataHelper.INVALID_PACKAGE)
       expect(console.warn).toHaveBeenCalled()
       expect(console.warn.callCount).toBe 1
-      elements = view.togglePackages.find('a')
-      expect(elements.length).toBe testDataHelper.available_toggle_packages.length
-      packageNames = elements.map (i, element) =>
-          $(element).text()
-      .get();
+      nodeList = togglePackagesElement.querySelectorAll('a')
+      expect(nodeList.length).toBe testDataHelper.available_toggle_packages.length
+      packageNames = []
+      for node in nodeList
+        packageNames.push node.innerText
       expect(packageNames).toEqual testDataHelper.STARTING_TOGGLE_PACKAGE_DISPLAY_NAMES
 
+
 describe "TogglePackagesStatusView with setupExamplePackages()", ->
-  [togglePackagesStatusView, view] = []
+  [togglePackagesStatusView, togglePackagesElement] = []
 
   beforeEach ->
-    atom.workspaceView = new WorkspaceView
-    testDataHelper.setupExamplePackages()
-    atom.workspaceView.statusBar = new StatusBarMock()
-    atom.workspaceView.statusBar.attach()
-    togglePackagesStatusView = new TogglePackagesStatusView()
-    view = atom.workspaceView.statusBar.leftPanel.children().view()
+    workspaceElement = atom.views.getView(atom.workspace)
+
+    waitsForPromise ->
+      atom.packages.activatePackage('status-bar')
+
+    runs ->
+      testDataHelper.setupExamplePackages()
+      togglePackagesStatusView = new TogglePackagesStatusView().initialize()
+      statusBarElement = workspaceElement.querySelector('status-bar')
+      togglePackagesElement = statusBarElement.querySelector('toggle-packages')
 
   afterEach ->
-    atom.workspaceView.statusBar.remove()
-    atom.workspaceView.statusBar = null
+    togglePackagesStatusView.destroy()
 
   describe "the attached view", ->
 
