@@ -6,7 +6,7 @@
   "repository": "https://github.com/robenkleene/toggle-packages",
   "license": "MIT",
   "engines": {
-    "atom": ">0.50.0"
+    "atom": "*"
   },
   "dependencies": {
     "underscore-plus": "1.x"
