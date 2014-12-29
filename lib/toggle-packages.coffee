@@ -12,6 +12,7 @@ module.exports =
 
   activate: ->
     @togglePackagesStatusView = new TogglePackagesStatusView().initialize()
+    @commandNameToDisposable = {}
 
     togglePackagesChangeHandler = (newValue, oldValue) =>
       removedPackages = _.difference(oldValue, newValue)
@@ -25,18 +26,26 @@ module.exports =
     togglePackagesChangeHandler(atom.config.get('toggle-packages.togglePackages'), [])
 
   deactivate: ->
+    for name, disposable of @commandNameToDisposable
+      disposable.dispose()
     @togglePackagesStatusView.destroy()
 
   addTogglePackageCommand: (name) ->
     if !togglePackagesManager.isValidPackage(name)
       console.warn "'#{name}' is not an available package name"
       return
-    atom.commands.add 'atom-workspace', "toggle-packages:toggle-#{name}", => @togglePackage(name)
+    disposable = atom.commands.add 'atom-workspace', "toggle-packages:toggle-#{name}", => 
+      @togglePackage(name)
+    if disposable?
+      @commandNameToDisposable[name] = disposable
 
   removeTogglePackageCommand: (name) ->
     if not togglePackagesManager.isValidPackageName(name)
       return
-    # TODO implement
+    if @commandNameToDisposable.hasOwnProperty(name)
+      disposable = @commandNameToDisposable[name]
+      disposable.dispose()
+      delete @commandNameToDisposable[name]
 
   togglePackage: (name) ->
     togglePackagesManager.togglePackage(name)

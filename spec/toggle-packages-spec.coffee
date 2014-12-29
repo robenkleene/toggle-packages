@@ -16,7 +16,8 @@ describe "TogglePackages", ->
       atom.workspace.open()
 
   afterEach ->
-    atom.packages.deactivatePackage('toggle-packages')
+    if atom.packages.isPackageActive('toggle-packages')
+      atom.packages.deactivatePackage('toggle-packages')
 
   it "adds toggle commands for enabled packages", ->
     testPackage = testDataHelper.VALID_PACKAGE_STARTS_ENABLED
@@ -68,4 +69,30 @@ describe "TogglePackages", ->
     expect(console.warn.callCount).toBe 1
     expect(testDataHelper.commandExists(testCommand)).toBe false
 
-# TODO it "removes commands for packages removed from config", ->
+  it "removes commands for packages removed from config", ->
+    testPackage = testDataHelper.VALID_PACKAGE_STARTS_ENABLED
+    testCommand = "toggle-packages:toggle-#{testPackage}"
+    expect(testDataHelper.commandExists(testCommand)).toBe true
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe false
+    atom.commands.dispatch workspaceElement, testCommand
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe true
+    atom.commands.dispatch workspaceElement, testCommand
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe false
+    # Remove from config
+    togglePackages = atom.config.get('toggle-packages.togglePackages')
+    togglePackages = togglePackages.filter (name) -> name isnt testDataHelper.VALID_PACKAGE_STARTS_ENABLED
+    atom.config.set('toggle-packages.togglePackages', togglePackages)
+    expect(testDataHelper.commandExists(testCommand)).toBe false
+    # Test command fails after removing from config
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe false
+    atom.commands.dispatch workspaceElement, testCommand
+    expect(atom.packages.isPackageDisabled(testPackage)).toBe false
+
+  it "removes all commands when the package is deactivated", ->
+    for testPackage in testDataHelper.STARTING_TOGGLE_PACKAGES
+      testCommand = "toggle-packages:toggle-#{testPackage}"
+      expect(testDataHelper.commandExists(testCommand)).toBe true
+    atom.packages.deactivatePackage('toggle-packages')
+    for testPackage in testDataHelper.STARTING_TOGGLE_PACKAGES
+      testCommand = "toggle-packages:toggle-#{testPackage}"
+      expect(testDataHelper.commandExists(testCommand)).toBe false

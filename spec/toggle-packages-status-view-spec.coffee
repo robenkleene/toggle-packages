@@ -2,7 +2,7 @@ TogglePackages = require '../lib/toggle-packages'
 TogglePackagesStatusView = require '../lib/toggle-packages-status-view'
 testDataHelper = require './fixtures/test-data-helper'
 
-describe "activate()", ->
+describe "activate() and deactivate()", ->
   workspaceElement = null
 
   beforeEach ->
@@ -21,17 +21,19 @@ describe "activate()", ->
       atom.packages.emitter.emit 'did-activate-all'
 
   afterEach ->
+    if atom.packages.isPackageActive('toggle-packages')
+      atom.packages.deactivatePackage('toggle-packages')
+
+  it "activate() appends only one toggle packages element", ->
+    statusBarElement = workspaceElement.querySelector('status-bar')
+    togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
+    expect(togglePackagesNodeList.length).toBe 1
+
+  it "deactivate() removes the toggle packages element", ->
     atom.packages.deactivatePackage('toggle-packages')
     statusBarElement = workspaceElement.querySelector('status-bar')
     togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
     expect(togglePackagesNodeList.length).toBe 0
-
-  describe "activate()", ->
-
-    it "appends only one .toggle-packages-wrapper", ->
-      statusBarElement = workspaceElement.querySelector('status-bar')
-      togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
-      expect(togglePackagesNodeList.length).toBe 1
 
 describe "TogglePackagesStatusView with setupMockPackages()", ->
   [togglePackagesStatusView, togglePackagesElement] = []
