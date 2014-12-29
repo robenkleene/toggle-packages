@@ -14,7 +14,7 @@ class TogglePackagesStatusView extends HTMLDivElement
     @statusBarTile?.destroy()
 
   attach: =>
-    statusBar = atom.views.getView(atom.workspace).querySelector("status-bar")
+    statusBar = atom.views.getView(atom.workspace).querySelector('status-bar')
     if statusBar?
       @statusBarTile = statusBar.addLeftTile(item: this, priority: 20)
       @setupChangeHandlers()
@@ -49,15 +49,15 @@ class TogglePackagesStatusView extends HTMLDivElement
   DISABLED_PACKAGE_CLASS: 'text-subtle'
 
   enablePackage: (name) ->
-    packageLink = @getPackageStatusLink(name)
+    packageLink = @getPackageStatusElement(name)
     packageLink?.classList.remove(@DISABLED_PACKAGE_CLASS)
 
   disablePackage: (name) ->
-    packageLink = @getPackageStatusLink(name)
+    packageLink = @getPackageStatusElement(name)
     packageLink?.classList.add(@DISABLED_PACKAGE_CLASS)
 
   removeTogglePackage: (name) ->
-    packageLink = @getPackageStatusLink(name)
+    packageLink = @getPackageStatusElement(name)
     if packageLink?
       @togglePackagesLinks.removeChild(packageLink)
 
@@ -66,7 +66,7 @@ class TogglePackagesStatusView extends HTMLDivElement
       console.warn "'#{name}' is not an available package name"
       return
 
-    packageLink = document.createElement('div')
+    packageLink = document.createElement('a')
     packageLink.id = name
     packageLink.textContent = @getPackageDisplayName(name)
     packageLink.addEventListener 'click', ->
@@ -78,7 +78,7 @@ class TogglePackagesStatusView extends HTMLDivElement
   getPackageDisplayName: (name) ->
     _.undasherize(_.uncamelcase(name))
 
-  getPackageStatusLink: (name) ->
+  getPackageStatusElement: (name) ->
     if not togglePackagesManager.isValidPackageName(name)
       return
     @togglePackagesLinks.querySelector "##{name}"    
