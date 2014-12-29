@@ -56,8 +56,6 @@ exports.setupExamplePackages = ->
     atom.packages.disablePackage(@VALID_PACKAGE_STARTS_DISABLED)
 
 exports.commandExists = (commandName) ->
-  # TODO Remove 'underscore-plus' as dependency?
-  # _ = require 'underscore-plus'
   eventElement = atom.views.getView(atom.workspace)
   commands = atom.commands.findCommands(target: eventElement)
   exists = false
