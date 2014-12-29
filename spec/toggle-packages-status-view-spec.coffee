@@ -22,6 +22,9 @@ describe "activate()", ->
 
   afterEach ->
     atom.packages.deactivatePackage('toggle-packages')
+    statusBarElement = workspaceElement.querySelector('status-bar')
+    togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
+    expect(togglePackagesNodeList.length).toBe 0
 
   describe "activate()", ->
 
