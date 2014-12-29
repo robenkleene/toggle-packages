@@ -1,4 +1,3 @@
-{$, WorkspaceView, View} = require 'atom' # TODO Do I need any of this?
 TogglePackages = require '../lib/toggle-packages'
 TogglePackagesStatusView = require '../lib/toggle-packages-status-view'
 testDataHelper = require './fixtures/test-data-helper'
@@ -77,7 +76,6 @@ describe "TogglePackagesStatusView with setupMockPackages()", ->
       expect(element.id).toBe testDataHelper.VALID_PACKAGE_STARTS_DISABLED
 
     it "toggles the disabled class starting from disabled", ->
-      console.log togglePackagesStatusView
       element = togglePackagesStatusView.getPackageStatusElement(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
       expect(element.className).toBe togglePackagesStatusView.DISABLED_PACKAGE_CLASS
       # Enable

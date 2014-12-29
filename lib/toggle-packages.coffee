@@ -3,12 +3,12 @@ _ = require 'underscore-plus'
 TogglePackagesStatusView = require './toggle-packages-status-view'
 
 module.exports =
-  togglePackagesView: null
-  configDefaults:
-    togglePackages: [
-      'wrap-guide',
-      'git-diff'
-    ]
+  config:
+    togglePackages:
+      type: 'array'
+      default: ['wrap-guide', 'git-diff']
+      items:
+        type: 'string'
 
   activate: ->
     @togglePackagesStatusView = new TogglePackagesStatusView().initialize()
