@@ -34,7 +34,7 @@ module.exports =
     if !togglePackagesManager.isValidPackage(name)
       console.warn "'#{name}' is not an available package name"
       return
-    disposable = atom.commands.add 'atom-workspace', "toggle-packages:toggle-#{name}", => 
+    disposable = atom.commands.add 'atom-workspace', "toggle-packages:toggle-#{name}", =>
       @togglePackage(name)
     if disposable?
       @commandNameToDisposable[name] = disposable
