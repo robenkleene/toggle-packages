@@ -19,7 +19,7 @@ class TogglePackagesStatusView extends HTMLDivElement
       @statusBarTile = statusBar.addLeftTile(item: this, priority: 20)
       @setupChangeHandlers()
     else
-      @activateDisposable = atom.packages.onDidActivateAll =>
+      @activateDisposable = atom.packages.onDidActivateInitialPackages =>
         @activateDisposable.dispose()
         @attach()
 
@@ -81,6 +81,6 @@ class TogglePackagesStatusView extends HTMLDivElement
   getPackageStatusElement: (name) ->
     if not togglePackagesManager.isValidPackageName(name)
       return
-    @togglePackagesLinks.querySelector "##{name}"    
-    
+    @togglePackagesLinks.querySelector "##{name}"
+
 module.exports = document.registerElement('toggle-packages', prototype: TogglePackagesStatusView.prototype)
