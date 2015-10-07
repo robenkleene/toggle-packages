@@ -45,6 +45,8 @@ exports.setupMockPackages = ->
 
 exports.setupExamplePackages = ->
   @setupTogglePackages()
+  if atom.packages.packageDirPaths[0] != @FIXTURE_PACKAGE_DIRECTORY
+    atom.packages.packageDirPaths.unshift(@FIXTURE_PACKAGE_DIRECTORY)
 
   waitsForPromise =>
     atom.packages.activatePackage(@VALID_PACKAGE_STARTS_ENABLED)
