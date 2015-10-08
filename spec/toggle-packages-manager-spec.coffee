@@ -47,12 +47,14 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
   describe "togglePackage(name)", ->
 
     it "toggles a disabled package", ->
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
       togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe false
       togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe true
 
     it "toggles an enabled package", ->
+      expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe false
       togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
       expect(togglePackagesManager.isPackageEnabled(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)).toBe true
       togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_DISABLED)
@@ -66,6 +68,7 @@ describe "TogglePackagesManager with setupExamplePackages()", ->
 
     it "makes 'atom.config' update 'core.disabledPackages' when a package becomes disabled", ->
       expect((atom.config.get 'core.disabledPackages').indexOf(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).toBe -1
+
       atom.config.onDidChange 'core.disabledPackages', ({newValue}) ->
         expect(newValue.indexOf(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)).not.toBe -1
       togglePackagesManager.togglePackage(testDataHelper.VALID_PACKAGE_STARTS_ENABLED)
