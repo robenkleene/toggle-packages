@@ -9,11 +9,25 @@ module.exports =
       default: ['wrap-guide', 'git-diff']
       items:
         type: 'string'
+      order: 1
+    displayStatusBar:
+      title: 'Display Toggle Packages in Status Bar'
+      type: 'boolean'
+      default: true
+      order: 2
 
   activate: ->
-    @togglePackagesStatusView = new TogglePackagesStatusView().initialize()
-    @commandNameToDisposable = {}
+    displayStatusBarChangeHandler = (newValue) =>
+      if @togglePackagesStatusView?
+        @togglePackagesStatusView.destroy()
+        @togglePackagesStatusView = null
+      if newValue
+        @togglePackagesStatusView = new TogglePackagesStatusView().initialize()
+    atom.config.onDidChange 'toggle-packages.displayStatusBar', ({newValue, oldValue}) ->
+      displayStatusBarChangeHandler(newValue)
+    displayStatusBarChangeHandler(atom.config.get('toggle-packages.displayStatusBar'))
 
+    @commandNameToDisposable = {}
     togglePackagesChangeHandler = (newValue, oldValue) =>
       removedPackages = _.difference(oldValue, newValue)
       for removedPackage in removedPackages
@@ -28,7 +42,9 @@ module.exports =
   deactivate: ->
     for name, disposable of @commandNameToDisposable
       disposable.dispose()
-    @togglePackagesStatusView.destroy()
+    if @togglePackagesStatusView?
+      @togglePackagesStatusView.destroy()
+      @togglePackagesStatusView = null
 
   addTogglePackageCommand: (name) ->
     if !togglePackagesManager.isValidPackage(name)

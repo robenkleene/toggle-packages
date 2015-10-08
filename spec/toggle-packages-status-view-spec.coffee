@@ -2,10 +2,11 @@ TogglePackages = require '../lib/toggle-packages'
 TogglePackagesStatusView = require '../lib/toggle-packages-status-view'
 testDataHelper = require './fixtures/test-data-helper'
 
-describe "activate() and deactivate()", ->
+describe "activate() and deactivate() with displayStatusBar true", ->
   workspaceElement = null
 
   beforeEach ->
+    atom.config.set('toggle-packages.displayStatusBar', true)
     workspaceElement = atom.views.getView(atom.workspace)
 
     waitsForPromise ->
@@ -24,7 +25,19 @@ describe "activate() and deactivate()", ->
     if atom.packages.isPackageActive('toggle-packages')
       atom.packages.deactivatePackage('toggle-packages')
 
-  it "activate() appends only one toggle packages element", ->
+  it "activate() appends one toggle packages element", ->
+    statusBarElement = workspaceElement.querySelector('status-bar')
+    togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
+    expect(togglePackagesNodeList.length).toBe 1
+
+  it "toggles the status bar item when `toggle-packages.displayStatusBar` changes", ->
+
+    atom.config.set('toggle-packages.displayStatusBar', false)
+    statusBarElement = workspaceElement.querySelector('status-bar')
+    togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
+    expect(togglePackagesNodeList.length).toBe 0
+
+    atom.config.set('toggle-packages.displayStatusBar', true)
     statusBarElement = workspaceElement.querySelector('status-bar')
     togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
     expect(togglePackagesNodeList.length).toBe 1
@@ -34,6 +47,54 @@ describe "activate() and deactivate()", ->
     statusBarElement = workspaceElement.querySelector('status-bar')
     togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
     expect(togglePackagesNodeList.length).toBe 0
+
+
+describe "activate() with displayStatusBar false", ->
+  workspaceElement = null
+
+  beforeEach ->
+    atom.config.set('toggle-packages.displayStatusBar', false)
+    workspaceElement = atom.views.getView(atom.workspace)
+
+    waitsForPromise ->
+      atom.packages.activatePackage('status-bar')
+
+    waitsForPromise ->
+      atom.packages.activatePackage('toggle-packages')
+
+    waitsForPromise ->
+      atom.workspace.open()
+
+    runs ->
+      atom.packages.emitter.emit 'did-activate-all'
+
+  afterEach ->
+    if atom.packages.isPackageActive('toggle-packages')
+      atom.packages.deactivatePackage('toggle-packages')
+
+  it "activate() does not append a toggle packages element", ->
+    statusBarElement = workspaceElement.querySelector('status-bar')
+    togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
+    expect(togglePackagesNodeList.length).toBe 0
+
+  it "toggles the status bar item when `toggle-packages.displayStatusBar` changes", ->
+
+    atom.config.set('toggle-packages.displayStatusBar', true)
+    statusBarElement = workspaceElement.querySelector('status-bar')
+    togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
+    expect(togglePackagesNodeList.length).toBe 1
+
+    atom.config.set('toggle-packages.displayStatusBar', false)
+    statusBarElement = workspaceElement.querySelector('status-bar')
+    togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
+    expect(togglePackagesNodeList.length).toBe 0
+
+  it "deactivate() removes the toggle packages element", ->
+    atom.packages.deactivatePackage('toggle-packages')
+    statusBarElement = workspaceElement.querySelector('status-bar')
+    togglePackagesNodeList = statusBarElement.querySelectorAll('toggle-packages')
+    expect(togglePackagesNodeList.length).toBe 0
+
 
 describe "TogglePackagesStatusView with setupMockPackages()", ->
   [togglePackagesStatusView, togglePackagesElement] = []
