@@ -15,7 +15,7 @@ A setting controls which packages to enable toggling for.
 
 ![Toggle Packages](https://raw.githubusercontent.com/robenkleene/toggle-packages/master/docs/toggle-packages-settings.png)
 
-# Key Bindings
+# Adding Key Bindings
 
 For example, to add a shortcut to the built-in [Wrap Guide](https://github.com/atom/wrap-guide) package, you'd add the following to your [keymap](https://atom.io/docs/v1.5.3/behind-atom-keymaps-in-depth):
 
