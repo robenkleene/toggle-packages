@@ -4,6 +4,7 @@ path = require 'path'
 
 exports.VALID_PACKAGE_STARTS_ENABLED = "package-with-command"
 exports.VALID_PACKAGE_STARTS_ENABLED_DISPLAY_NAME = "Package With Command"
+exports.VALID_PACKAGE_STARTS_ENABLED_COMMAND = "#{@VALID_PACKAGE_STARTS_ENABLED}:test-command"
 
 exports.VALID_PACKAGE_STARTS_DISABLED = "package-with-styles"
 exports.VALID_PACKAGE_STARTS_DISABLED_DISPLAY_NAME = "Package With Styles"
