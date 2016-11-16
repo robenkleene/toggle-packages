@@ -69,7 +69,7 @@ describe "TogglePackages", ->
     expect(console.warn.callCount).toBe 1
     expect(testDataHelper.commandExists(testCommand)).toBe false
 
-  it "removes commands for packages removed from config", ->
+  it "removes toggle package commands for packages removed from config", ->
     testPackage = testDataHelper.VALID_PACKAGE_STARTS_ENABLED
     testCommand = "toggle-packages:toggle-#{testPackage}"
     expect(testDataHelper.commandExists(testCommand)).toBe true
@@ -88,7 +88,7 @@ describe "TogglePackages", ->
     atom.commands.dispatch workspaceElement, testCommand
     expect(atom.packages.isPackageDisabled(testPackage)).toBe false
 
-  it "removes all commands when the package is deactivated", ->
+  it "removes all toggle package commands when toggle packages is deactivated", ->
     for testPackage in testDataHelper.STARTING_TOGGLE_PACKAGES
       testCommand = "toggle-packages:toggle-#{testPackage}"
       expect(testDataHelper.commandExists(testCommand)).toBe true
